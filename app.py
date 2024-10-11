@@ -13,6 +13,12 @@ child_activity = [
     {"site": "educational.com", "time": "1:30 PM"},
 ]
 
+# Simulated email registration data
+email_registrations = {
+    "test@example.com": ["socialmedia.com", "shopping.com", "forum.com"],
+    "child@example.com": ["gamesite.com", "streaming.com", "eduportal.com"]
+}
+
 # Homepage route
 @app.route('/')
 def home():
@@ -37,6 +43,16 @@ def login():
 @app.route('/dashboard')
 def dashboard():
     return render_template('dashboard.html', activity=child_activity)
+
+# Email tracker route
+@app.route('/email_tracker', methods=['GET', 'POST'])
+def email_tracker():
+    if request.method == 'POST':
+        email = request.form['email']
+        # Simulate checking where the email has been registered
+        registered_sites = email_registrations.get(email, [])
+        return render_template('email_results.html', email=email, registered_sites=registered_sites)
+    return render_template('email_tracker.html')
 
 if __name__ == '__main__':
     app.run(debug=True)
