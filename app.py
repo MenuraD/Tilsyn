@@ -6,6 +6,13 @@ app = Flask(__name__)
 PARENT_USERNAME = 'parent'
 PARENT_PASSWORD = 'password123'
 
+# Dummy data for child activity which i will expand later
+child_activity = [
+    {"site": "example.com", "time": "10:30 AM"},
+    {"site": "socialmedia.com", "time": "11:00 AM"},
+    {"site": "educational.com", "time": "1:30 PM"},
+]
+
 # Homepage route
 @app.route('/')
 def home():
@@ -29,7 +36,7 @@ def login():
 # Dashboard route (after successful login)
 @app.route('/dashboard')
 def dashboard():
-    return "Welcome to the parent dashboard. Here you'll monitor the child's online activity."
+    return render_template('dashboard.html', activity=child_activity)
 
 if __name__ == '__main__':
     app.run(debug=True)
