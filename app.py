@@ -1,6 +1,10 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, redirect, url_for
 
 app = Flask(__name__)
+
+# Dummy credentials (username and password for the parent)
+PARENT_USERNAME = 'parent'
+PARENT_PASSWORD = 'password123'
 
 # Homepage route
 @app.route('/')
