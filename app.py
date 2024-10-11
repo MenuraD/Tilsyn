@@ -17,9 +17,13 @@ def login():
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
-        # Print the login info
-        print(f'Username: {username}, Password: {password}')
-        return f'Logged in as {username}'
+
+        # Check if the credentials are correct
+        if username == PARENT_USERNAME and password == PARENT_PASSWORD:
+            return redirect(url_for('dashboard'))
+        else:
+            return "Invalid credentials. Please try again."
+
     return render_template('login.html')
 
 if __name__ == '__main__':
