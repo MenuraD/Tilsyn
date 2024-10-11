@@ -26,5 +26,10 @@ def login():
 
     return render_template('login.html')
 
+# Dashboard route (after successful login)
+@app.route('/dashboard')
+def dashboard():
+    return "Welcome to the parent dashboard. Here you'll monitor the child's online activity."
+
 if __name__ == '__main__':
     app.run(debug=True)
