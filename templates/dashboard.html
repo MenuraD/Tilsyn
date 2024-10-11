@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Parent Dashboard</title>
+</head>
+<body>
+    <h1>Child's Online Activity</h1>
+    <ul>
+        {% for activity in activity %}
+            <li>{{ activity.site }} - Visited at: {{ activity.time }}</li>
+        {% endfor %}
+    </ul>
+    <a href="/login">Log out</a>
+</body>
+</html>
