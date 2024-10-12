@@ -3,22 +3,37 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Email Results</title>
+    <title>Email Registrations</title>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            padding: 10px;
+            border: 1px solid #ccc;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
 </head>
 <body>
-    <h1>Results for {{ email }}</h1>
-    {% if registered_sites %}
-        <h3>Registered on the following sites:</h3>
-        <ul>
-            {% for site in registered_sites %}
-                <li>{{ site }}</li>
-            {% endfor %}
-        </ul>
-    {% else %}
-        <h3>No registration found for this email.</h3>
-    {% endif %}
-    <a href="/email_tracker">Check another email</a>
-    <br><br>
-    <a href="/dashboard">Go back to dashboard</a>
+    <h1>Email Registrations</h1>
+    <table>
+        <tr>
+            <th>Email</th>
+            <th>Website</th>
+            <th>Timestamp</th>
+        </tr>
+        {% for reg in registrations %}
+        <tr>
+            <td>{{ reg.email }}</td>
+            <td>{{ reg.url }}</td>
+            <td>{{ reg.timestamp }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+    <a href="{{ url_for('logout') }}">Logout</a>
 </body>
 </html>
