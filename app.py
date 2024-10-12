@@ -1,58 +1,105 @@
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, redirect, url_for, request, session, flash, jsonify
+from werkzeug.security import generate_password_hash, check_password_hash
 
 app = Flask(__name__)
+app.secret_key = 'your_secret_key'  
 
-# Dummy credentials (username and password for the parent)
-PARENT_USERNAME = 'parent'
-PARENT_PASSWORD = 'password123'
+# In-memory user storage (you can replace this with a database later)
+users = {}
+registrations = []  # Store email registrations here
 
-# Dummy data for child activity which i will expand later
-child_activity = [
-    {"site": "example.com", "time": "10:30 AM"},
-    {"site": "socialmedia.com", "time": "11:00 AM"},
-    {"site": "educational.com", "time": "1:30 PM"},
-]
+# -------------------- AUTH ROUTES --------------------
 
-# Simulated email registration data
-email_registrations = {
-    "test@example.com": ["socialmedia.com", "shopping.com", "forum.com"],
-    "child@example.com": ["gamesite.com", "streaming.com", "eduportal.com"]
-}
+# Registration route
+@app.route('/register', methods=['GET', 'POST'])
+def register():
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
 
-# Homepage route
-@app.route('/')
-def home():
-    return "Welcome to Tilsyn!"
+        if username in users:
+            flash('Username already exists, please choose another', 'error')
+        else:
+            # Hash the password and save the new user
+            hashed_password = generate_password_hash(password, method='sha256')
+            users[username] = hashed_password
+            flash('Registration successful! Please log in.', 'success')
+            return redirect(url_for('login'))
+    
+    return render_template('register.html')
 
-# Login page route
+# Login route
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
 
-        # Check if the credentials are correct
-        if username == PARENT_USERNAME and password == PARENT_PASSWORD:
-            return redirect(url_for('dashboard'))
+        user_password = users.get(username)
+
+        if user_password and check_password_hash(user_password, password):
+            session['username'] = username
+            flash('Login successful!', 'success')
+            return redirect(url_for('email_results'))  # Redirect to the dashboard
         else:
-            return "Invalid credentials. Please try again."
+            flash('Invalid username or password', 'error')
 
     return render_template('login.html')
 
-# Dashboard route (after successful login)
-@app.route('/dashboard')
-def dashboard():
-    return render_template('dashboard.html', activity=child_activity)
+# Logout route
+@app.route('/logout')
+def logout():
+    session.pop('username', None)
+    flash('You have been logged out', 'success')
+    return redirect(url_for('login'))
 
-# Email tracker route
-@app.route('/email_tracker', methods=['GET', 'POST'])
-def email_tracker():
-    if request.method == 'POST':
-        email = request.form['email']
-        # Simulate checking where the email has been registered
-        registered_sites = email_registrations.get(email, [])
-        return render_template('email_results.html', email=email, registered_sites=registered_sites)
-    return render_template('email_tracker.html')
+# -------------------- MAIN FUNCTIONALITY ROUTES --------------------
 
+# Homepage route (optional)
+@app.route('/')
+def home():
+    return render_template('index.html')  # Make sure you have an index.html file
+
+# API route to receive registration data from the browser extension
+@app.route('/api/register', methods=['POST'])
+def register_data():
+    if 'username' not in session:
+        return jsonify({"error": "Unauthorized"}), 401
+
+    data = request.json
+    email = data.get('email')
+    url = data.get('url')
+    timestamp = data.get('timestamp')
+
+    # Store the registration data (email, website URL, and timestamp)
+    registrations.append({
+        'email': email,
+        'url': url,
+        'timestamp': timestamp
+    })
+
+    return jsonify({"status": "success"}), 200
+
+# Route to display the results of the email registrations (login required)
+@app.route('/email_results')
+def email_results():
+    if 'username' not in session:
+        flash('You need to log in to access this page', 'error')
+        return redirect(url_for('login'))
+
+    return render_template('email_results.html', registrations=registrations)
+
+# Email checking route (if needed for other functionalities)
+@app.route('/check_email', methods=['POST'])
+def check_email():
+    if 'username' not in session:
+        flash('You need to log in to access this page', 'error')
+        return redirect(url_for('login'))
+
+    email = request.form['email']
+    # Add your email checking logic here
+    return render_template('email_results.html', email=email)
+
+# -------------------- RUN FLASK --------------------
 if __name__ == '__main__':
     app.run(debug=True)
