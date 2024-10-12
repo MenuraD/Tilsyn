@@ -1,5 +1,5 @@
-from flask import Flask, render_template, redirect, url_for, request, session, flash, jsonify
-from werkzeug.security import generate_password_hash, check_password_hash
+from flask import Flask, request, render_template, redirect, url_for, flash
+from werkzeug.security import generate_password_hash
 
 app = Flask(__name__)
 app.secret_key = 'your_secret_key'  
@@ -20,8 +20,8 @@ def register():
         if username in users:
             flash('Username already exists, please choose another', 'error')
         else:
-            # Hash the password and save the new user
-            hashed_password = generate_password_hash(password, method='sha256')
+            # Hash the password using a supported method
+            hashed_password = generate_password_hash(password, method='pbkdf2:sha256')
             users[username] = hashed_password
             flash('Registration successful! Please log in.', 'success')
             return redirect(url_for('login'))
