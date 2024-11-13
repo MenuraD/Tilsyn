@@ -35,21 +35,17 @@ def login():
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
-
-        user_password = users.get(username)
-
-        # Check if the user exists
         if username in users:
-            # Retrieve the stored hashed password and compare it with the provided password
             hashed_password = users[username]
             if check_password_hash(hashed_password, password):
+                session['username'] = username  # Store username in session
                 flash('Login successful!', 'success')
                 return redirect(url_for('email_results'))
             else:
                 flash('Invalid password', 'error')
         else:
             flash('User does not exist', 'error')
-
+    
     return render_template('login.html')
 
 # Logout route
