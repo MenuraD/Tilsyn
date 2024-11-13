@@ -51,8 +51,8 @@ def login():
 # Logout route
 @app.route('/logout')
 def logout():
-    session.pop('username', None)
-    flash('You have been logged out', 'success')
+    session.pop('username', None)  # Remove the username from the session
+    flash('You have been logged out.', 'info')
     return redirect(url_for('login'))
 
 # -------------------- MAIN FUNCTIONALITY ROUTES --------------------
