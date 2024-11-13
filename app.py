@@ -1,5 +1,6 @@
 from flask import Flask, request, render_template, redirect, url_for, flash
-from werkzeug.security import generate_password_hash
+from werkzeug.security import generate_password_hash, check_password_hash
+
 
 app = Flask(__name__)
 app.secret_key = 'your_secret_key'  
@@ -37,12 +38,17 @@ def login():
 
         user_password = users.get(username)
 
-        if user_password and check_password_hash(user_password, password):
-            session['username'] = username
-            flash('Login successful!', 'success')
-            return redirect(url_for('email_results'))  # Redirect to the dashboard
+        # Check if the user exists
+        if username in users:
+            # Retrieve the stored hashed password and compare it with the provided password
+            hashed_password = users[username]
+            if check_password_hash(hashed_password, password):
+                flash('Login successful!', 'success')
+                return redirect(url_for('email_results'))
+            else:
+                flash('Invalid password', 'error')
         else:
-            flash('Invalid username or password', 'error')
+            flash('User does not exist', 'error')
 
     return render_template('login.html')
 
