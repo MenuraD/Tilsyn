@@ -1,7 +1,8 @@
+// Listener for messages from content.js
 chrome.runtime.onMessage.addListener(function (message, sender, sendResponse) {
     if (message.type === 'form_submission') {
         console.log("Email: " + message.email + " was registered at " + message.url);
-        
+
         // Store the data locally
         chrome.storage.local.get({ registrations: [] }, function (data) {
             let registrations = data.registrations;
