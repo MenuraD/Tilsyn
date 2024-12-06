@@ -1,4 +1,4 @@
-from flask import Flask, request, render_template, redirect, url_for, flash, session
+from flask import Flask, request, jsonify, render_template, redirect, url_for, flash, session
 from werkzeug.security import generate_password_hash, check_password_hash
 
 
@@ -101,6 +101,23 @@ def check_email():
     email = request.form['email']
     # Add your email checking logic here
     return render_template('email_results.html', email=email)
+
+# Create an API Route to Receive Data
+@app.route('/api/track-email', methods=['POST'])
+def track_email():
+    try:
+        data = request.json
+        email = data.get("email")
+        if not email:
+            return jsonify({"error": "Email is required"}), 400
+
+        # Process the email (e.g., save to database, analyze, etc.)
+        print(f"Received email: {email}")
+
+        # Send a success response
+        return jsonify({"message": "Email tracked successfully"}), 200
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
 
 # -------------------- RUN FLASK --------------------
 if __name__ == '__main__':
