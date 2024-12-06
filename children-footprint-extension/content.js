@@ -1,17 +1,15 @@
-// Function to detect form submissions
-document.addEventListener('submit', function(event) {
-    let form = event.target;
-    let emailField = form.querySelector('input[type="email"]');  // Detects email input field
+document.addEventListener('submit', function (event) {
+    const form = event.target;
+    const emailInput = form.querySelector('input[type="email"]'); // Adjust selector as needed
 
-    if (emailField) {
-        let email = emailField.value;
-        let currentUrl = window.location.href;
+    if (emailInput) {
+        const email = emailInput.value;
+        const url = window.location.href;
 
-        // Send email and URL data to the background script
         chrome.runtime.sendMessage({
             type: 'form_submission',
             email: email,
-            url: currentUrl
+            url: url
         });
     }
 });
