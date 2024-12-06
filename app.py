@@ -118,6 +118,16 @@ def track_email():
         return jsonify({"message": "Email tracked successfully"}), 200
     except Exception as e:
         return jsonify({"error": str(e)}), 500
+    
+tracked_emails = []
+
+@app.route('/api/track-email', methods=['POST'])
+def track_email():
+    data = request.json
+    email = data.get("email")
+    if email:
+        tracked_emails.append(email)
+    return jsonify({"message": "Email tracked successfully"}), 200
 
 # -------------------- RUN FLASK --------------------
 if __name__ == '__main__':
