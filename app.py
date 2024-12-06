@@ -129,6 +129,10 @@ def track_email():
         tracked_emails.append(email)
     return jsonify({"message": "Email tracked successfully"}), 200
 
+@app.route('/email_results')
+def email_results():
+    return render_template('email_results.html', emails=tracked_emails)
+
 # -------------------- RUN FLASK --------------------
 if __name__ == '__main__':
     app.run(debug=True)
