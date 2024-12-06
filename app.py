@@ -82,14 +82,6 @@ def register_data():
 
     return jsonify({"status": "success"}), 200
 
-# Route to display the results of the email registrations (login required)
-@app.route('/email_results')
-def email_results():
-    if 'username' not in session:
-        flash('You need to log in to access this page', 'error')
-        return redirect(url_for('login'))
-
-    return render_template('email_results.html', registrations=registrations)
 
 # Email checking route (if needed for other functionalities)
 @app.route('/check_email', methods=['POST'])
