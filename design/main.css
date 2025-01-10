@@ -1,5 +1,7 @@
-@import url('https://fonts.googleapis.com/css2?family=Rubik+Vinyl&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Jersey+15&display=swap');
 
 body {
-    font-family: 'Rubik Vinyl', cursive;
+    font-family: "Jersey 15", serif;
+    font-weight: 400;
+    font-style: normal;
 }
