@@ -9,7 +9,7 @@
         setInterval(function () {
             location.reload();
         }, 1000);
-    </script
+    </script>
     <style>
         table {
             width: 100%;
@@ -43,7 +43,7 @@
     <h2>Tracked Emails</h2>
     <ul>
     {% for email in emails %}
-        <li>{{ email }}</li>
+        <li>Email: {{ email }}</li>
     {% endfor %}
     </ul>
     <a href="{{ url_for('logout') }}">Logout</a>
