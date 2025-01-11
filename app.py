@@ -7,7 +7,7 @@ app.secret_key = 'your_secret_key'
 
 # In-memory user storage (you can replace this with a database later)
 users = {}
-registrations = []   # This will store both emails and urls
+registrations = []  # Store email registrations here
 
 # -------------------- AUTH ROUTES --------------------
 

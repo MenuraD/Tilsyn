@@ -15,7 +15,7 @@ chrome.runtime.onMessage.addListener(function (message, sender, sendResponse) {
         });
 
         // Send the data to the backend server
-        fetch("http://127.0.0.1:5000/api/register", {
+        fetch("http://127.0.0.1:5000/api/track-email", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
