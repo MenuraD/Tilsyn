@@ -1,5 +1,12 @@
-@import url('https://fonts.googleapis.com/css2?family=Rubik+Vinyl&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Oswald:wght@200..700&family=Rubik+Vinyl&display=swap');
 
 h1 {
     font-family: "Rubik Vinyl", serif;
+    font-size: 800%;
+}
+h2 {
+    font-family: "Rubik Vinyl", serif
+}
+p {
+    font-family: "Oswald", serif;;
 }
