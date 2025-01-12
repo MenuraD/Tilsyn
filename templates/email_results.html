@@ -30,20 +30,18 @@
         <tr>
             <th>Email</th>
             <th>Website</th>
-            <th>Timestamp</th>
         </tr>
-        {% for reg in registrations %}
         <tr>
-            <td>{{ reg.email }}</td>
-            <td>{{ reg.url }}</td>  <!-- Displaying the URL -->
-            <td>{{ reg.timestamp }}</td>
+            {% for email in emails %}
+            <td>{{ email.email }}</td>
+            <td>{{ email.url }}</td>  <!-- Displaying the URL -->
+            {% endfor %}
         </tr>
-        {% endfor %}
     </table>
     <h2>Tracked Emails</h2>
     <ul>
     {% for email in emails %}
-    <li>{{ email }}</li>
+    <li>Email: {{ email.email }} | Website: {{ email.url }}</li>
     {% endfor %}
     </ul>
     <a href="{{ url_for('logout') }}">Logout</a>
