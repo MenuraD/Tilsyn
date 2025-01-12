@@ -98,8 +98,14 @@ tracked_emails = []
 def track_email():
     data = request.json
     email = data.get("email")
+    url = data.get("url")  # Capture URL
     if email:
-        tracked_emails.append(email)
+        tracked_emails.append({
+            "email": email,
+            "url": url  # Storing the URL
+        })
+    return jsonify({"message": "Email and URL tracked successfully"}), 200
+
     return jsonify({"message": "Email tracked successfully"}), 200
 
 @app.route('/email_results')
