@@ -2,10 +2,12 @@
 
 body {
     display: flex;
-    justify-content: center;
-    align-items: center;
+    flex-direction: column; /* Align content vertically */
+    justify-content: center; /* Center content vertically */
+    align-items: center; /* Center content horizontally */
     height: 100vh; /* Full viewport height */
-    margin: 0;
+    margin: 0; /* Remove default margin */
+    background-color: bisque;
 }
 
 form {
@@ -13,19 +15,38 @@ form {
     border: 1px solid #ccc;
     border-radius: 5px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    font-family: "Oswald", serif;
 }
+
 a {
-    font-family: "Oswald", serif;;
+    display: inline-block; /* Ensures the links behave like inline elements */
+    margin: 0 10px; /* Adds horizontal spacing between links */
+    font-family: "Oswald", serif; /* Retain your existing font style */
+    text-decoration: none; /* Removes the underline */
+    color: black; /* Set text color (change as needed) */
+    text-align: center; /* Ensures the text is centered within the link */
 }
+
+a:hover {
+    text-decoration: underline; /* Optional: Add underline on hover */
+}
+
 h1 {
     font-family: "Rubik Vinyl", serif;
     font-size: 800%;
     text-align: center;
 }
+
 h2 {
-    font-family: "Rubik Vinyl", serif
+    font-family: "Rubik Vinyl", serif;
+    font-size: 600%;
 }
+
 p {
-    font-family: "Oswald", serif;;
+    font-family: "Oswald", serif;
     font-size: 300%;
+}
+.link-container {
+    display: flex; /* Make the container a flexbox */
+    gap: 20px; /* Add spacing between links */
 }

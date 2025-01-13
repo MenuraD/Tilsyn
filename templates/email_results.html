@@ -4,11 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Email Registrations</title>
+    <link rel="stylesheet" href="../static/design/main.css">s
     <script>
         // Refresh the page every second (1000 milliseconds)
         setInterval(function () {
             location.reload();
-        }, 1000);
+        }, 2000);
     </script>
     <style>
         table {
@@ -25,18 +26,18 @@
     </style>
 </head>
 <body>
-    <h1>Email Registrations</h1>
+    <h2>Email Registrations</h2>
     <table>
         <tr>
             <th>Email</th>
             <th>Website</th>
         </tr>
+        {% for email in emails %}
         <tr>
-            {% for email in emails %}
             <td>{{ email.email }}</td>
-            <td>{{ email.url }}</td>  <!-- Displaying the URL -->
-            {% endfor %}
+            <td>{{ email.url }}</td>
         </tr>
+        {% endfor %}
     </table>
     <h2>Tracked Emails</h2>
     <ul>
