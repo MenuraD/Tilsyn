@@ -1,10 +1,19 @@
+import psycopg2
 from flask import Flask, request, jsonify, render_template, redirect, url_for, flash, session
 from werkzeug.security import generate_password_hash, check_password_hash
-
 
 app = Flask(__name__)
 app.secret_key = 'your_secret_key'  
 
+def get_db_connection():
+    conn = psycopg2.connect(
+        dbname="mydatabase",
+        user="postgres",
+        password="guyi2123",
+        host="localhost",
+        port="5432"
+    )
+    return conn
 # In-memory user storage (you can replace this with a database later)
 users = {}
 registrations = []  # Store email registrations here
@@ -18,15 +27,28 @@ def register():
         username = request.form['username']
         password = request.form['password']
 
-        if username in users:
+        # Connect to database and check if the username already exists
+        conn = get_db_connection()
+        cur = conn.cursor()
+        cur.execute('SELECT * FROM users WHERE username = %s', (username,))
+        existing_user = cur.fetchone()
+        
+        if existing_user:
             flash('Username already exists, please choose another', 'error')
         else:
-            # Hash the password using a supported method
+            # Hash the password
             hashed_password = generate_password_hash(password, method='pbkdf2:sha256')
-            users[username] = hashed_password
+
+            # Insert the new user into the database
+            cur.execute('INSERT INTO users (username, password_hash) VALUES (%s, %s)', (username, hashed_password))
+            conn.commit()
+
             flash('Registration successful! Please log in.', 'success')
             return redirect(url_for('login'))
-    
+        
+        cur.close()
+        conn.close()
+
     return render_template('register.html')
 
 # Login route
@@ -35,8 +57,15 @@ def login():
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
-        if username in users:
-            hashed_password = users[username]
+
+        # Connect to database and verify username and password
+        conn = get_db_connection()
+        cur = conn.cursor()
+        cur.execute('SELECT * FROM users WHERE username = %s', (username,))
+        user = cur.fetchone()
+        
+        if user:
+            hashed_password = user[2]  # The password_hash is at index 2
             if check_password_hash(hashed_password, password):
                 session['username'] = username  # Store username in session
                 flash('Login successful!', 'success')
@@ -45,7 +74,10 @@ def login():
                 flash('Invalid password', 'error')
         else:
             flash('User does not exist', 'error')
-    
+        
+        cur.close()
+        conn.close()
+
     return render_template('login.html')
 
 # Logout route
