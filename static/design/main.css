@@ -35,11 +35,13 @@ h1 {
     font-family: "Rubik Vinyl", serif;
     font-size: 800%;
     text-align: center;
+    margin: 0;
 }
 
 h2 {
     font-family: "Rubik Vinyl", serif;
     font-size: 600%;
+    margin: 2%;
 }
 
 p {
@@ -49,4 +51,8 @@ p {
 .link-container {
     display: flex; /* Make the container a flexbox */
     gap: 20px; /* Add spacing between links */
+}
+
+button {
+    border-radius: 10%;
 }

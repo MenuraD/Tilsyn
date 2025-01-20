@@ -13,16 +13,47 @@
     </script>
     <style>
         table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-        th, td {
-            padding: 10px;
-            border: 1px solid #ccc;
-        }
-        th {
-            background-color: #f2f2f2;
-        }
+    width: 90%; /* Slightly wider for better readability */
+    margin: 20px auto; /* Center the table on the page */
+    border-collapse: collapse;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+    border-radius: 8px; /* Rounded corners */
+    overflow: hidden; /* Prevents border-radius from clipping content */
+}
+
+th, td {
+    padding: 12px 15px; /* Increased padding for more space */
+    text-align: left; /* Align text to the left by default */
+    border: 1px solid #ddd; /* Lighter border color */
+    border-bottom: 1px solid #e0e0e0; /* Slightly darker bottom border for separation */
+}
+
+th {
+    background-color: #4CAF50; /* A more pleasant green */
+    color: white; /* White text for contrast */
+    font-weight: 600; /* Slightly bolder font for headers */
+    text-transform: uppercase; /* Makes headers uppercase */
+}
+
+tr:nth-child(even) {
+    background-color: #f9f9f9; /* Light gray background for even rows */
+}
+
+tr:hover {
+    background-color: #e6f7e6; /* Softer hover color */
+}
+
+/* Optional: Styles for smaller screens */
+@media screen and (max-width: 600px) {
+    table {
+        width: 100%; /* Full width on smaller screens */
+    }
+
+    th, td {
+        padding: 8px 10px; /* Reduced padding on smaller screens */
+        font-size: 0.9em; /* Slightly smaller font size */
+    }
+}
     </style>
 </head>
 <body>
