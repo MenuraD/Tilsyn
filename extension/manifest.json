@@ -1,6 +1,6 @@
 {
     "manifest_version": 3,
-    "name": "Children Footprint Tracker",
+    "name": "Tilsyn",
     "version": "1.0",
     "description": "Track account registrations for parents.",
     "permissions": [

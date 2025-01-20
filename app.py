@@ -113,16 +113,6 @@ def register_data():
     })
 
     return jsonify({"status": "success"}), 200
-
-# Email checking route (if needed for other functionalities)
-@app.route('/check_email', methods=['POST'])
-def check_email():
-    if 'username' not in session:
-        flash('You need to log in to access this page', 'error')
-        return redirect(url_for('login'))
-    email = request.form['email']
-    # Add your email checking logic here
-    return render_template('email_results.html', email=email)
  
 tracked_emails = []
 
