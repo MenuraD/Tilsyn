@@ -121,10 +121,13 @@ def track_email():
     data = request.json
     email = data.get('email')
     url = data.get("url")  # Capture URL
+    timestamp = data.get("timestamp")
+
     if email:
         tracked_emails.append({
             "email": email,
-            "url": url  # Storing the URL
+            "url": url,  # Storing the URL
+            "timestamp": timestamp
         })
     return jsonify({"message": "Email and URL tracked successfully"}), 200
 

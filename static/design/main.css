@@ -1,15 +1,81 @@
+/* main.css */
 @import url('https://fonts.googleapis.com/css2?family=Oswald:wght@200..700&family=Rubik+Vinyl&display=swap');
 
 body {
     display: flex;
-    flex-direction: column; /* Align content vertically */
-    justify-content: center; /* Center content vertically */
-    align-items: center; /* Center content horizontally */
-    height: 100vh; /* Full viewport height */
-    margin: 0; /* Remove default margin */
+    flex-direction: column; /* Keep vertical flex direction */
+    min-height: 100vh; /* Ensure body covers full viewport height */
+    margin: 0;
     background-color: bisque;
 }
 
+/* Remove centering from body that affects the nav */
+/* justify-content: center; */
+/* align-items: center; */
+
+nav {
+    width: 100%; /* Make nav span full width */
+    background-color: #333;
+    padding: 10px 0; /* Add some top/bottom padding */
+}
+
+nav ul {
+    list-style: none;
+    margin: 0 auto; /* Center the UL horizontally */
+    padding: 0;
+    overflow: hidden;
+    max-width: 960px; /* Optional: set a max width for larger screens */
+    display: flex; /* Use flexbox for better alignment */
+    justify-content: space-around; /* Distribute items evenly */
+
+}
+
+nav li {
+    float: left; /*Remove float as we're using flexbox */
+}
+
+nav a {
+    display: block;
+    color: white;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+    font-family: "Oswald", serif; /* Apply font to nav links */
+}
+
+nav a:hover {
+    background-color: #111;
+}
+
+main {
+    flex-grow: 1; /* Allow main content to take up available space */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+h1 {
+    font-family: "Rubik Vinyl", serif;
+    font-size: 800%;
+    text-align: center;
+    margin: 0;
+}
+
+/* ...rest of your CSS (h2, p, .link-container, button, form, a) */
+p {
+    font-family: "Oswald", serif;
+    font-size: 300%;
+}
+
+.link-container {
+    display: flex;
+    gap: 20px;
+}
+
+button {
+    border-radius: 10%;
+}
 form {
     padding: 20px;
     border: 1px solid #ccc;
@@ -26,33 +92,6 @@ a {
     color: black; /* Set text color (change as needed) */
     text-align: center; /* Ensures the text is centered within the link */
 }
-
 a:hover {
     text-decoration: underline; /* Optional: Add underline on hover */
-}
-
-h1 {
-    font-family: "Rubik Vinyl", serif;
-    font-size: 800%;
-    text-align: center;
-    margin: 0;
-}
-
-h2 {
-    font-family: "Rubik Vinyl", serif;
-    font-size: 600%;
-    margin: 2%;
-}
-
-p {
-    font-family: "Oswald", serif;
-    font-size: 300%;
-}
-.link-container {
-    display: flex; /* Make the container a flexbox */
-    gap: 20px; /* Add spacing between links */
-}
-
-button {
-    border-radius: 10%;
 }
