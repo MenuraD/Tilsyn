@@ -1,80 +1,62 @@
-/* main.css */
 @import url('https://fonts.googleapis.com/css2?family=Oswald:wght@200..700&family=Rubik+Vinyl&display=swap');
-
 body {
-    display: flex;
-    flex-direction: column; /* Keep vertical flex direction */
-    min-height: 100vh; /* Ensure body covers full viewport height */
     margin: 0;
     background-color: bisque;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
 }
-
-/* Remove centering from body that affects the nav */
-/* justify-content: center; */
-/* align-items: center; */
-
 nav {
-    width: 100%; /* Make nav span full width */
+    width: 100%;
     background-color: #333;
-    padding: 10px 0; /* Add some top/bottom padding */
+    padding: 10px 0;
 }
-
 nav ul {
     list-style: none;
-    margin: 0 auto; /* Center the UL horizontally */
+    margin: 0 auto;
     padding: 0;
     overflow: hidden;
-    max-width: 960px; /* Optional: set a max width for larger screens */
-    display: flex; /* Use flexbox for better alignment */
-    justify-content: space-around; /* Distribute items evenly */
-
+    max-width: 960px;
+    display: flex;
+    justify-content: space-around;
 }
-
-nav li {
-    float: left; /*Remove float as we're using flexbox */
-}
-
 nav a {
     display: block;
     color: white;
     text-align: center;
-    padding: 14px 16px;
     text-decoration: none;
-    font-family: "Oswald", serif; /* Apply font to nav links */
+    font-family: "Oswald", serif;
 }
-
 nav a:hover {
     background-color: #111;
 }
-
-main {
-    flex-grow: 1; /* Allow main content to take up available space */
+.main-content { /* New container for content */
+    flex-grow: 1;
     display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
+    flex-direction: column; /* Stack content vertically */
+    justify-content: center; /* Center vertically */
+    align-items: center; /* Center horizontally */
 }
-
+h2, form, a{
+    text-align: center;
+}
 h1 {
     font-family: "Rubik Vinyl", serif;
     font-size: 800%;
-    text-align: center;
     margin: 0;
 }
-
-/* ...rest of your CSS (h2, p, .link-container, button, form, a) */
 p {
     font-family: "Oswald", serif;
     font-size: 300%;
+    margin-bottom: 20px; /* Add some spacing below the paragraph */
 }
-
 .link-container {
     display: flex;
     gap: 20px;
 }
-
 button {
     border-radius: 10%;
+    padding: 10px 20px;
 }
 form {
     padding: 20px;
@@ -82,16 +64,24 @@ form {
     border-radius: 5px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     font-family: "Oswald", serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
-
+form label, form input {
+    margin-bottom: 10px;
+    width: 100%;
+    box-sizing: border-box;
+    max-width: 300px;
+}
 a {
-    display: inline-block; /* Ensures the links behave like inline elements */
-    margin: 0 10px; /* Adds horizontal spacing between links */
-    font-family: "Oswald", serif; /* Retain your existing font style */
-    text-decoration: none; /* Removes the underline */
-    color: black; /* Set text color (change as needed) */
-    text-align: center; /* Ensures the text is centered within the link */
+    display: block;
+    margin: 10px auto;
+    font-family: "Oswald", serif;
+    text-decoration: none;
+    color: black;
+    text-align: center;
 }
 a:hover {
-    text-decoration: underline; /* Optional: Add underline on hover */
+    text-decoration: underline;
 }

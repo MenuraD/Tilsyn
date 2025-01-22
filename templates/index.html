@@ -9,17 +9,19 @@
 <body>
     <nav>
         <ul>
-            <li><a href="index.html">Home</a></li>
+            <li><a href="{{ url_for('home') }}">Home</a></li>
             <li><a href="about.html">About</a></li>
             <li><a href="services.html">Services</a></li>
             <li><a href="contact.html">Contact</a></li>
         </ul>
     </nav>
-    <h1>Welcome to Tilsyn</h1>
-    <p>Monitor your children's online activity</p>
-    <div class="link-container">
-        <a href="{{ url_for('register') }}">Register</a>
-        <a href="{{ url_for('login') }}">Login</a>
+    <div class="main-content">
+        <h1>Welcome to Tilsyn</h1>
+        <p>Monitor your children's online activity</p>
+        <div class="link-container">
+            <a href="{{ url_for('register') }}">Register</a>
+            <a href="{{ url_for('login') }}">Login</a>
+        </div>
     </div>
 </body>
 </html>
