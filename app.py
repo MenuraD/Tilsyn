@@ -14,9 +14,6 @@ def get_db_connection():
         port="5432"
     )
     return conn
-# In-memory user storage (you can replace this with a database later)
-users = {}
-registrations = []  # Store email registrations here
 
 # -------------------- AUTH ROUTES --------------------
 
@@ -38,17 +35,14 @@ def register():
         else:
             # Hash the password
             hashed_password = generate_password_hash(password, method='pbkdf2:sha256')
-
             # Insert the new user into the database
             cur.execute('INSERT INTO users (username, password_hash) VALUES (%s, %s)', (username, hashed_password))
             conn.commit()
-
             flash('Registration successful! Please log in.', 'success')
             return redirect(url_for('login'))
         
         cur.close()
         conn.close()
-
     return render_template('register.html')
 
 # Login route
@@ -92,7 +86,30 @@ def logout():
 # Homepage route (optional)
 @app.route('/')
 def home():
-    return render_template('index.html')  # Make sure you have an index.html file
+    return render_template('index.html')
+
+#Track Email Registrations  
+@app.route('/api/track-email', methods=['POST'])
+def track_email():
+    data = request.json
+    email = data.get('email')
+    url = data.get("url")  # Capture URL
+    timestamp = data.get("timestamp")
+
+    conn = get_db_connection()
+    cur = conn.cursor()
+    cur.execute("INSERT INTO registrations (email, url, timestamp) VALUES (%s, %s, %s)", (email, url, timestamp))
+    conn.commit()
+    cur.close()
+    conn.close()
+
+    if email:
+        tracked_emails.append({
+            "email": email,
+            "url": url,  # Storing the URL
+            "timestamp": timestamp
+        })
+    return jsonify({"message": "Email and URL tracked successfully"}), 200
 
 # API route to receive registration data from the browser extension
 @app.route('/api/register', methods=['POST'])
@@ -116,20 +133,7 @@ def register_data():
  
 tracked_emails = []
 
-@app.route('/api/track-email', methods=['POST'])
-def track_email():
-    data = request.json
-    email = data.get('email')
-    url = data.get("url")  # Capture URL
-    timestamp = data.get("timestamp")
 
-    if email:
-        tracked_emails.append({
-            "email": email,
-            "url": url,  # Storing the URL
-            "timestamp": timestamp
-        })
-    return jsonify({"message": "Email and URL tracked successfully"}), 200
 
 @app.route('/email_results')
 def email_results():
