@@ -11,7 +11,7 @@ document.addEventListener('submit', function (event) {
         let messageType = passwordInput ? 'login_attempt' : 'form_submission';
 
         chrome.runtime.sendMessage({
-            type: 'form_submission',
+            type: messageType,
             email: email,
             url: url
         });
