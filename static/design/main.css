@@ -37,18 +37,25 @@ nav a:hover {
     justify-content: center; /* Center vertically */
     align-items: center; /* Center horizontally */
 }
-h2, form, a{
-    text-align: center;
-}
 h1 {
     font-family: "Rubik Vinyl", serif;
     font-size: 800%;
     margin: 0;
 }
+h2 {
+    text-align: center;
+    margin-top: 2%;
+    font-family: "Rubik Vinyl", serif;
+    font-size: 200%;    
+}
 p {
     font-family: "Oswald", serif;
-    font-size: 300%;
     margin-bottom: 20px; /* Add some spacing below the paragraph */
+    margin-left: 10%;
+    margin-right: 10%;
+}
+.p_index {
+    font-size: 300%;
 }
 .link-container {
     display: flex;
@@ -56,7 +63,8 @@ p {
 }
 button {
     border-radius: 10%;
-    padding: 10px 20px;
+    padding: 5px 10px;
+    font-family: "Oswald", serif;
 }
 form {
     padding: 20px;
@@ -67,9 +75,10 @@ form {
     display: flex;
     flex-direction: column;
     align-items: center;
+    margin-left: 40%;
+    margin-right: 40%;
 }
 form label, form input {
-    margin-bottom: 10px;
     width: 100%;
     box-sizing: border-box;
     max-width: 300px;
@@ -84,4 +93,41 @@ a {
 }
 a:hover {
     text-decoration: underline;
+}
+table {
+    width: 90%;
+    margin: 20px auto;
+    border-collapse: collapse;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    overflow: hidden;
+    font-family: "Oswald", serif;
+}
+
+th, td {
+    padding: 12px 15px;
+    text-align: left;
+    border: 1px solid #ddd;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+th {
+    background-color: #333;
+    color: white;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+tr:hover {
+    background-color: #e6f7e6;
+}
+
+@media screen and (max-width: 600px) {
+    table {
+        width: 100%;
+    }
 }

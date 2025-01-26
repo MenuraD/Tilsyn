@@ -3,7 +3,8 @@ from flask import Flask, request, jsonify, render_template, redirect, url_for, f
 from werkzeug.security import generate_password_hash, check_password_hash
 
 app = Flask(__name__)
-app.secret_key = 'your_secret_key'  
+app.secret_key = 'your_secret_key'
+tracked_emails = []  # Ensure this is defined at the top
 
 def get_db_connection():
     conn = psycopg2.connect(
@@ -17,84 +18,88 @@ def get_db_connection():
 
 # -------------------- AUTH ROUTES --------------------
 
-# Registration route
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
 
-        # Connect to database and check if the username already exists
         conn = get_db_connection()
         cur = conn.cursor()
         cur.execute('SELECT * FROM users WHERE username = %s', (username,))
         existing_user = cur.fetchone()
-        
+
         if existing_user:
             flash('Username already exists, please choose another', 'error')
         else:
-            # Hash the password
             hashed_password = generate_password_hash(password, method='pbkdf2:sha256')
-            # Insert the new user into the database
             cur.execute('INSERT INTO users (username, password_hash) VALUES (%s, %s)', (username, hashed_password))
             conn.commit()
             flash('Registration successful! Please log in.', 'success')
             return redirect(url_for('login'))
-        
+
         cur.close()
         conn.close()
+
     return render_template('register.html')
 
-# Login route
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
 
-        # Connect to database and verify username and password
         conn = get_db_connection()
         cur = conn.cursor()
         cur.execute('SELECT * FROM users WHERE username = %s', (username,))
         user = cur.fetchone()
-        
+
         if user:
-            hashed_password = user[2]  # The password_hash is at index 2
+            hashed_password = user[2]  # Password hash stored in DB
             if check_password_hash(hashed_password, password):
-                session['username'] = username  # Store username in session
+                session['username'] = username
                 flash('Login successful!', 'success')
                 return redirect(url_for('email_results'))
             else:
                 flash('Invalid password', 'error')
         else:
             flash('User does not exist', 'error')
-        
+
         cur.close()
         conn.close()
 
     return render_template('login.html')
 
-# Logout route
 @app.route('/logout')
 def logout():
-    session.pop('username', None)  # Remove the username from the session
+    session.pop('username', None)
     flash('You have been logged out.', 'info')
     return redirect(url_for('login'))
 
 # -------------------- MAIN FUNCTIONALITY ROUTES --------------------
 
-# Homepage route (optional)
 @app.route('/')
 def home():
     return render_template('index.html')
 
-#Track Email Registrations  
+@app.route('/about')
+def about():
+    return render_template('about.html')
+
 @app.route('/api/track-email', methods=['POST'])
 def track_email():
     data = request.json
     email = data.get('email')
-    url = data.get("url")  # Capture URL
+    url = data.get("url")  
     timestamp = data.get("timestamp")
+
+    if email:
+        tracked_emails.append({
+            "email": email,
+            "url": url,
+            "timestamp": timestamp
+        })
+        print(f"📩 Email Logged: {email} at {url} on {timestamp}")
 
     conn = get_db_connection()
     cur = conn.cursor()
@@ -103,41 +108,42 @@ def track_email():
     cur.close()
     conn.close()
 
-    if email:
-        tracked_emails.append({
-            "email": email,
-            "url": url,  # Storing the URL
-            "timestamp": timestamp
-        })
     return jsonify({"message": "Email and URL tracked successfully"}), 200
 
-# API route to receive registration data from the browser extension
-@app.route('/api/register', methods=['POST'])
-def register_data():
-    if 'username' not in session:
-        return jsonify({"error": "Unauthorized"}), 401
-
+# Track login attempts
+@app.route('/api/track-login', methods=['POST'])
+def track_login():
     data = request.json
     email = data.get('email')
     url = data.get('url')
     timestamp = data.get('timestamp')
 
-    # Store the registration data (email, website URL, and timestamp)
-    registrations.append({
-        'email': email,
-        'url': url,
-        'timestamp': timestamp
-    })
+    conn = get_db_connection()
+    cur = conn.cursor()
+    cur.execute("INSERT INTO logins (email, url, timestamp) VALUES (%s, %s, %s)", (email, url, timestamp))
+    conn.commit()
+    cur.close()
+    conn.close()
 
-    return jsonify({"status": "success"}), 200
- 
-tracked_emails = []
-
-
+    return jsonify({"message": "Login tracked successfully"}), 200
 
 @app.route('/email_results')
 def email_results():
-    return render_template('email_results.html', emails=tracked_emails)
+    conn = get_db_connection()
+    cur = conn.cursor()
+    
+    # Fetch email registrations
+    cur.execute("SELECT email, url, timestamp FROM registrations ORDER BY timestamp DESC")
+    registrations = cur.fetchall()
+
+    # Fetch login attempts
+    cur.execute("SELECT email, url, timestamp FROM logins ORDER BY timestamp DESC")
+    logins = cur.fetchall()
+
+    cur.close()
+    conn.close()
+
+    return render_template('email_results.html', registrations=registrations, logins=logins)
 
 # -------------------- RUN FLASK --------------------
 if __name__ == '__main__':

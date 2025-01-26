@@ -9,8 +9,8 @@
 <body>
     <nav>
         <ul>
-            <li><a href="index.html">Home</a></li>
-            <li><a href="about.html">About</a></li>
+            <li><a href="{{ url_for('home') }}">Home</a></li>
+            <li><a href="{{ url_for('about') }}">About</a></li>
             <li><a href="services.html">Services</a></li>
             <li><a href="contact.html">Contact</a></li>
         </ul>
@@ -21,6 +21,8 @@
         <input type="text" id="username" name="username" required><br>
         <label for="password">Password:</label>
         <input type="password" id="password" name="password" required><br>
+        <label for="password">Age:</label>
+        <input type="age" id="age" name="age"><br>
         <button type="submit">Register</button>
     </form>
     <a href="{{ url_for('login') }}">Already have an account? Log in here</a>

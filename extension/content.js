@@ -1,19 +1,35 @@
 document.addEventListener('submit', function (event) {
     const form = event.target;
-    const emailInput = form.querySelector('input[type="email"]'); // Adjust selector as needed
-    const passwordInput = form.querySelector('input[type="password"]'); // Detects login forms
+    const emailInput = form.querySelector('input[type="email"]');
 
     if (emailInput) {
         const email = emailInput.value;
         const url = window.location.href;
 
-        // Determine if this is a login or registration form
-        let messageType = passwordInput ? 'login_attempt' : 'form_submission';
-
         chrome.runtime.sendMessage({
-            type: messageType,
+            type: 'form_submission',
             email: email,
             url: url
         });
+    }
+});
+
+// Track manual login events (clicking a login button)
+document.addEventListener('click', function (event) {
+    if (event.target.tagName === 'BUTTON' || event.target.type === 'submit') {
+        const form = event.target.closest('form');
+        if (form) {
+            const emailInput = form.querySelector('input[type="email"]');
+            if (emailInput) {
+                const email = emailInput.value;
+                const url = window.location.href;
+
+                chrome.runtime.sendMessage({
+                    type: 'form_submission',
+                    email: email,
+                    url: url
+                });
+            }
+        }
     }
 });

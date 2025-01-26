@@ -3,68 +3,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Email Registrations</title>
+    <title>Tracked Activity</title>
     <link rel="stylesheet" href="../static/design/main.css">
     <script>
-        // Refresh the page every second (1000 milliseconds)
+        // Refresh the page every 2 seconds
         setInterval(function () {
             location.reload();
         }, 2000);
     </script>
-    <style>
-        table {
-    width: 90%; /* Slightly wider for better readability */
-    margin: 20px auto; /* Center the table on the page */
-    border-collapse: collapse;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
-    border-radius: 8px; /* Rounded corners */
-    overflow: hidden; /* Prevents border-radius from clipping content */
-}
-
-th, td {
-    padding: 12px 15px; /* Increased padding for more space */
-    text-align: left; /* Align text to the left by default */
-    border: 1px solid #ddd; /* Lighter border color */
-    border-bottom: 1px solid #e0e0e0; /* Slightly darker bottom border for separation */
-}
-
-th {
-    background-color: #4CAF50; /* A more pleasant green */
-    color: white; /* White text for contrast */
-    font-weight: 600; /* Slightly bolder font for headers */
-    text-transform: uppercase; /* Makes headers uppercase */
-}
-
-tr:nth-child(even) {
-    background-color: #f9f9f9; /* Light gray background for even rows */
-}
-
-tr:hover {
-    background-color: #e6f7e6; /* Softer hover color */
-}
-
-/* Optional: Styles for smaller screens */
-@media screen and (max-width: 600px) {
-    table {
-        width: 100%; /* Full width on smaller screens */
-    }
-
-    th, td {
-        padding: 8px 10px; /* Reduced padding on smaller screens */
-        font-size: 0.9em; /* Slightly smaller font size */
-    }
-}
-    </style>
 </head>
 <body>
     <nav>
         <ul>
-            <li><a href="index.html">Home</a></li>
-            <li><a href="about.html">About</a></li>
+            <li><a href="{{ url_for('home') }}">Home</a></li>
+            <li><a href="{{ url_for('about') }}">About</a></li>
             <li><a href="services.html">Services</a></li>
             <li><a href="contact.html">Contact</a></li>
         </ul>
     </nav>
+
     <h2>Email Registrations</h2>
     <table>
         <tr>
@@ -72,20 +29,31 @@ tr:hover {
             <th>Website</th>
             <th>Time</th>
         </tr>
-        {% for email in emails %}
+        {% for email in registrations %}
         <tr>
-            <td>{{ email.email }}</td>
-            <td>{{ email.url }}</td>
-            <td>{{ email.timestamp }}</td>
+            <td>{{ email[0] }}</td>
+            <td>{{ email[1] }}</td>
+            <td>{{ email[2] }}</td>
         </tr>
         {% endfor %}
     </table>
-    <h2>Tracked Emails</h2>
-    <ul>
-    {% for email in emails %}
-    <li>Email: {{ email.email }} | Website: {{ email.url }}</li>
-    {% endfor %}
-    </ul>
+
+    <h2>Login Attempts</h2>
+    <table>
+        <tr>
+            <th>Email</th>
+            <th>Website</th>
+            <th>Time</th>
+        </tr>
+        {% for login in logins %}
+        <tr>
+            <td>{{ login[0] }}</td>
+            <td>{{ login[1] }}</td>
+            <td>{{ login[2] }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+
     <a href="{{ url_for('logout') }}">Logout</a>
 </body>
 </html>
