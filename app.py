@@ -23,6 +23,12 @@ def register():
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
+        age = request.form.get('age', type=int)  # Get age as an integer
+
+        # Validate age
+        if age is None or age < 18:
+            flash('You must be at least 18 years old to register.', 'error')
+            return redirect(url_for('register'))
 
         conn = get_db_connection()
         cur = conn.cursor()
@@ -33,7 +39,7 @@ def register():
             flash('Username already exists, please choose another', 'error')
         else:
             hashed_password = generate_password_hash(password, method='pbkdf2:sha256')
-            cur.execute('INSERT INTO users (username, password_hash) VALUES (%s, %s)', (username, hashed_password))
+            cur.execute('INSERT INTO users (username, password_hash, age) VALUES (%s, %s, %s)', (username, hashed_password, age))
             conn.commit()
             flash('Registration successful! Please log in.', 'success')
             return redirect(url_for('login'))
@@ -85,6 +91,10 @@ def home():
 @app.route('/about')
 def about():
     return render_template('about.html')
+
+@app.route('/confirmation')
+def confirm():
+    return render_template('confirmation.html')
 
 @app.route('/api/track-email', methods=['POST'])
 def track_email():
