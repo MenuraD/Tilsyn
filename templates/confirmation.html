@@ -4,17 +4,34 @@
     <link rel="stylesheet" href="../static/design/main.css">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home</title>
+    <title>Confirmation</title>
 </head>
 <body>
-    <nav>
+    <nav class="confirmation-nav">
         <ul>
             <li><a href="{{ url_for('home') }}">Home</a></li>
             <li><a href="{{ url_for('about') }}">About</a></li>
-            <li><a href="services.html">Services</a></li>
+            <li><a href="{{ url_for('services') }}">Services</a></li>
             <li><a href="contact.html">Contact</a></li>
         </ul>
     </nav>
+    <div class="main-content confirmation-page">
+        <div class="confirmation-card">
+            <p class="p_index">Before you register...<br>Are you an...</p>
+            <div class="link-container confirmation-links"> <!-- Add confirmation-links class -->
+                <a href="{{ url_for('register') }}" class="age-btn adult-btn">
+                    <span>Adult</span>
+                    <svg class="btn-icon" viewBox="0 0 24 24"><path d="M12,4A4,4 0 0,1 16,8A4,4 0 0,1 12,12A4,4 0 0,1 8,8A4,4 0 0,1 12,4M12,14C16.42,14 20,15.79 20,18V20H4V18C4,15.79 7.58,14 12,14Z"/></svg>
+                </a>
+                <div class="separator">or</div>
+                <a href="{{ url_for('register') }}" class="age-btn child-btn">
+                    <svg class="btn-icon" viewBox="0 0 24 24"><path d="M11,2A2,2 0 0,0 9,4A2,2 0 0,0 11,6A2,2 0 0,0 13,4A2,2 0 0,0 11,2M11,8C9.89,8 9,8.89 9,10V11H8V22H10V18H12V22H14V11H13V10C13,8.89 12.11,8 11,8Z"/></svg>
+                    <span>Child</span>
+                </a>
+            </div>
+        </div>
+    </div>
+    <!--
     <div class="main-content">
         <p class="p_index">Before you register... are you an...</p>
         <div class="link-container">
@@ -23,5 +40,6 @@
             <a href="{{ url_for('register') }}">Child</a>
         </div>
     </div>
+    -->
 </body>
 </html>

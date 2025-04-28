@@ -6,10 +6,33 @@
     <title>Tracked Activity</title>
     <link rel="stylesheet" href="../static/design/main.css">
     <script>
-        // Refresh the page every 2 seconds
-        setInterval(function () {
-            location.reload();
-        }, 2000);
+    function refreshTables() {
+        fetch('/api/activity-data')
+            .then(response => response.json())
+            .then(data => {
+                updateTable('registrations-table', data.registrations);
+                updateTable('logins-table', data.logins); // Added
+                updateTable('visits-table', data.visits);
+            })
+            .catch(error => console.error('Error:', error));
+    }
+    function updateTable(tableId, rows) {
+        const table = document.querySelector(`#${tableId} tbody`);
+        table.innerHTML = rows.map(row => `
+        <tr>
+            ${tableId === 'visits-table' ? `
+                <td>${row.url} ${row.is_incognito ? '<span class="incognito-badge">Incognito Alert</span>' : ''}</td>
+                <td>${row.timestamp}</td>
+                <td>${row.is_incognito ? 'Yes' : 'No'}</td>
+            ` : `
+                ${row.email ? `<td>${row.email}</td>` : ''}
+                <td>${row.url}</td>
+                <td>${row.timestamp}</td>
+            `}
+        </tr>
+    `).join('');}
+    setInterval(refreshTables, 5000);
+    refreshTables();
     </script>
 </head>
 <body>
@@ -17,43 +40,140 @@
         <ul>
             <li><a href="{{ url_for('home') }}">Home</a></li>
             <li><a href="{{ url_for('about') }}">About</a></li>
-            <li><a href="services.html">Services</a></li>
+            <li><a href="{{ url_for('services') }}">Services</a></li>
             <li><a href="contact.html">Contact</a></li>
         </ul>
     </nav>
-
-    <h2>Email Registrations</h2>
-    <table>
-        <tr>
-            <th>Email</th>
-            <th>Website</th>
-            <th>Time</th>
-        </tr>
-        {% for email in registrations %}
-        <tr>
-            <td>{{ email[0] }}</td>
-            <td>{{ email[1] }}</td>
-            <td>{{ email[2] }}</td>
-        </tr>
-        {% endfor %}
-    </table>
-
-    <h2>Login Attempts</h2>
-    <table>
-        <tr>
-            <th>Email</th>
-            <th>Website</th>
-            <th>Time</th>
-        </tr>
-        {% for login in logins %}
-        <tr>
-            <td>{{ login[0] }}</td>
-            <td>{{ login[1] }}</td>
-            <td>{{ login[2] }}</td>
-        </tr>
-        {% endfor %}
-    </table>
-
-    <a href="{{ url_for('logout') }}">Logout</a>
+    <div class="activity-page">
+        <div class="activity-card">
+            <h2 class="activity-title">Tracked Activity</h2>
+            <div class="activity-section">
+                <h3>Email Registrations</h3>
+                <div class="table-container">
+                    <table id="registrations-table">
+                        <thead>
+                            <tr>
+                                <th>Email</th>
+                                <th>Website</th>
+                                <th>Time</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        {% for email in registrations %}
+                             <tr>
+                                <td>{{ email[0] }}</td>
+                                <td>{{ email[1] }}</td>
+                                <td>{{ email[2] }}</td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="activity-section">
+                <h3>Login Attempts</h3>
+                <div class="table-container">
+                    <table id="logins-table">
+                        <thead>
+                            <tr>
+                                <th>Email</th>
+                                <th>Website</th>
+                                <th>Time</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        {% for login in logins %}
+                            <tr>
+                                <td>{{ login[0] }}</td>
+                                <td>{{ login[1] }}</td>
+                                <td>{{ login[2] }}</td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="activity-section">
+                <h3>Visited Websites</h3>
+                <div class="table-container">
+                    <table id="visits-table" >
+                        <thead>
+                            <tr>
+                                <th>URL</th>
+                                <th>Time</th>
+                                <th>Incognito?</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for visit in visits %}
+                            <tr>
+                                <td>{{ visit[0] }}</td>  <!-- URL -->
+                                <td>{{ visit[1] }}</td>  <!-- Timestamp -->
+                                <td>{{ "Yes" if visit[2] else "No"}}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class ="activity-section">
+                <h3>System Activities</h3>
+                <div class="table-container">
+                    <table id="activities-table">
+                        <thead>
+                            <tr>
+                                <th>Type</th>
+                                <th>Details</th>
+                                <th>Time</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for activity in activities %}
+                            <tr>
+                                <td>{{ activity[0] }}</td>
+                                <td>
+                                    {% if activity[0] == 'application_usage' %}
+                                        {% for app in activity[1].get('applications', []) %}
+                                            <span class="app-badge">{{ app }}</span>
+                                        {% endfor %}
+                                    {% else %}
+                                        {{ activity[1]|tojson }}
+                                    {% endif %}
+                                </td>
+                                <td>{{ activity[2] }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="activity-section">
+                <h3>Keyword Alerts</h3>
+                <div class="table-container">
+                    <table id="keyword-table">
+                    <thead>
+                        <tr>
+                        <th>Keyword</th>
+                        <th>Context</th>
+                        <th>Time</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for alert in keyword_alerts %}
+                        <tr>
+                        <td>{{ alert[0] }}</td>
+                        <td>{{ alert[1] }}</td>
+                        <td>{{ alert[2] }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="logout-container">
+                <a href="{{ url_for('logout') }}" class="logout-btn">Logout</a>
+            </div>
+        </div>
+    </div>
 </body>
 </html>

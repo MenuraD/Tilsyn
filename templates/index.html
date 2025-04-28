@@ -11,17 +11,17 @@
         <ul>
             <li><a href="{{ url_for('home') }}">Home</a></li>
             <li><a href="{{ url_for('about') }}">About</a></li>
-            <li><a href="services.html">Services</a></li>
+            <li><a href="{{ url_for('services') }}">Services</a></li>
             <li><a href="contact.html">Contact</a></li>
         </ul>
     </nav>
-    <div class="main-content">
-        <h1>Welcome to Tilsyn</h1>
-        <p class="p_index">Monitor your children's online activity</p>
-        <div class="link-container">
-            <a href="{{ url_for('confirm') }}">Register</a>
-            <a href="{{ url_for('login') }}">Login</a>
-        </div>
+    <div class="main-content home-content">
+    <h1>Welcome to Tilsyn</h1>
+    <p class="p_index">Monitor your children's online activity</p>
+    <div class="home-links"> <!-- Remove 'link-container' class here -->
+        <a href="{{ url_for('confirm') }}" class="home-btn register-btn">Register</a>
+        <a href="{{ url_for('login') }}" class="home-btn login-btn">Login</a>
     </div>
+</div>
 </body>
 </html>
