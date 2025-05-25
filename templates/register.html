@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../static/design/main.css">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Rajdhani:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <title>Register</title>
+    <style>
+        .cyber-register {
+            background: linear-gradient(135deg, #001100 0%, #000800 100%);
+            min-height: 100vh;
+            position: relative;
+            overflow: hidden;
+        }
+ 
+        .register-card {
+            background: rgba(0, 20, 0, 0.9);
+            border: 2px solid #2ecc71;
+            border-radius: 15px;
+            padding: 3rem;
+            margin: 100px auto 2rem; 
+            max-width: 500px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 0 25px rgba(46, 204, 113, 0.3);
+        }
+
+        @media (max-width: 768px) {
+            .register-card {
+                margin: 80px 1rem 2rem;
+                padding: 2rem;
+            }
+        }
+ 
+        .register-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(46, 204, 113, 0.1), transparent);
+            animation: animate-grid 6s linear infinite;
+        }
+ 
+        .neon-text {
+            font-family: 'Orbitron', sans-serif;
+            text-shadow: 0 0 15px #2ecc71aa;
+            color: #2ecc71;
+        }
+ 
+        .cyber-alert {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(0, 20, 0, 0.95);
+            border: 2px solid #2ecc71;
+            border-radius: 10px;
+            padding: 2rem;
+            max-width: 400px;
+            z-index: 1000;
+            box-shadow: 0 0 30px rgba(46, 204, 113, 0.4);
+            text-align: center;
+        }
+ 
+        .cyber-alert::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(45deg, #2ecc71, transparent, #2ecc71);
+            z-index: -1;
+            animation: borderGlow 2s linear infinite;
+        }
+ 
+        @keyframes animate-grid {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+ 
+        @keyframes borderGlow {
+            0% { opacity: 0.5; }
+            50% { opacity: 1; }
+            100% { opacity: 0.5; }
+        }
+ 
+        .cyber-input {
+            background: rgba(255, 255, 255, 0.05) !important;
+            border: 1px solid #2ecc71 !important;
+            color: #2ecc71 !important;
+        }
+ 
+        .cyber-input:focus {
+            box-shadow: 0 0 15px rgba(46, 204, 113, 0.3) !important;
+        }
+    </style>
+</head>
+<body>
+    <div class="cyber-register">
+       <nav class="cyber-nav">
+        <div class="nav-container">
+            <a href="{{ url_for('home') }}" class="nav-logo">
+                <i class="fas fa-shield-alt"></i> TILSYN
+            </a>
+            
+            <div class="nav-items">
+                <a href="{{ url_for('home') }}" class="nav-link {% if active_page == 'home' %}active{% endif %}">
+                    <i class="fas fa-home"></i> Home
+                </a>
+                <a href="{{ url_for('services') }}" class="nav-link {% if active_page == 'dashboard' %}active{% endif %}">
+                    <i class="fas fa-user-shield"></i> Services
+                </a>
+                <a href="{{ url_for('about') }}" class="nav-link {% if active_page == 'about' %}active{% endif %}">
+                    <i class="fas fa-info-circle"></i> About
+                </a>
+                <a href="{{ url_for('logout') }}" class="nav-link">
+                    <i class="fas fa-sign-out-alt"></i> Login
+                </a>
+            </div>
+        </div>
+    </nav>
+        <div class="main-content">
+        <div class="register-card">
+            <div class="confirm-content" style="position: relative; z-index: 2;">
+                <h1 class="neon-text" style="font-size: 2rem; margin-bottom: 1.5rem;">CHILD REGISTRATION</h1>
+                
+                <form method="POST" onsubmit="return validateAge()" class="registration-form">
+                    <div class="form-group">
+                        <input type="text" id="name" name="name" required class="cyber-input">
+                        <label for="name" style="color: #2ecc71;">FULL NAME</label>
+                    </div>
+                    <div class="form-group">
+                        <input type="text" id="username" name="username" required class="cyber-input">
+                        <label for="username" style="color: #2ecc71;">USERNAME</label>
+                    </div>
+ 
+                    <div class="form-group">
+                        <input type="password" id="password" name="password" required class="cyber-input">
+                        <label for="password" style="color: #2ecc71;">PASSWORD</label>
+                    </div>
+ 
+                    <div class="form-group">
+                        <input type="number" id="age" name="age" required class="cyber-input">
+                        <label for="age" style="color: #2ecc71;">AGE VERIFICATION</label>
+                    </div>
+ 
+                    <button type="submit" class="submit-btn" style="background: linear-gradient(135deg, #2ecc71, #27ae60); width: 100%;">
+                        <i class="fas fa-user-shield"></i> CREATE CHILD ACCOUNT
+                    </button>
+                </form>
+ 
+                <div class="auth-link" style="margin-top: 2rem; color: #2ecc71;">
+                    <span>EXISTING USER?</span>
+                    <a href="{{ url_for('login') }}" style="color: #2ecc71; text-decoration: underline; margin-left: 0.5rem;">LOGIN</a>
+                </div>
+            </div>
+        </div>
+        </div>
+ 
+        <div id="ageAlert" class="cyber-alert" style="display: none;">
+            <i class="fas fa-exclamation-triangle" style="font-size: 2rem; color: #2ecc71; margin-bottom: 1rem;"></i>
+            <h3 class="neon-text" id="alertMessage"></h3>
+            <button onclick="document.getElementById('ageAlert').style.display = 'none'" 
+                    style="margin-top: 1.5rem; padding: 0.8rem 2rem; background: #2ecc71; border: none; border-radius: 5px; cursor: pointer;">
+                ACKNOWLEDGE
+            </button>
+            <button onclick="document.getElementById('ageAlert').style.display = 'none'" 
+                    style="margin-top: 1.5rem; padding: 0.8rem 2rem; background: #2ecc71; border: none; border-radius: 5px; cursor: pointer;">
+                ACKNOWLEDGE
+            </button>
+        </div>
+    </div>
+ 
+    <div class="scan-line" style="position: fixed; top: 0; left: 0; width: 100%; height: 2px;
+         background: linear-gradient(90deg, transparent, #2ecc71); animation: scan 4s linear infinite;"></div>
+ 
+    <script>
+        function validateAge() {
+            const ageInput = document.getElementById('age');
+            const age = parseInt(document.getElementById('age').value);
+            const alertBox = document.getElementById('ageAlert');
+            const alertMessage = document.getElementById('alertMessage');
+            if (age < 12 || age >= 18) {
+                alert("Child accounts must be between 12-17 years old");
+                return false;
+                }
+            return true;      
+            if (isNaN(age)) {
+                alertMessage.innerHTML = "INVALID AGE INPUT<br>PLEASE RE-ENTER DIGITAL CREDENTIALS";
+                alertBox.style.display = 'block';
+                return false;
+            }
+ 
+            if (age < 12) {
+                alertMessage.innerHTML = "⚠️ REGISTRATION DENIED ⚠️<br>MINIMUM AGE REQUIREMENT FOR CHILD ACCOUNT: 12";
+                alertBox.style.display = 'block';
+                return false;
+            }
+            
+            if (age >= 18) {
+                alertMessage.innerHTML = "⚠️ REGISTRATION DENIED ⚠️<br>MAXIMUM AGE REQUIREMENT FOR CHILD ACCOUNT: 18";
+                alertBox.style.display = 'block';
+                return false;
+            }
+ 
+            return true;
+        }
+    </script>
+</body>
+</html>

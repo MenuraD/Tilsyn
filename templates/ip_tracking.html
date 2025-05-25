@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IP Tracking</title>
+    <link rel="stylesheet" href="../static/design/main.css">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Rajdhani:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .cyber-main {
+            background: linear-gradient(135deg, #001100 0%, #000800 100%);
+            min-height: 100vh;
+            padding: 20px;
+            position: relative;
+            overflow: hidden;
+            color: #2ecc71;
+        }
+
+        .cyber-card {
+            background: rgba(0, 20, 0, 0.9);
+            border: 2px solid #2ecc71;
+            border-radius: 15px;
+            padding: 3rem;
+            margin: 100px auto 2rem;
+            max-width: 1200px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 0 25px rgba(46, 204, 113, 0.3);
+        }
+
+        .neon-text {
+            font-family: 'Orbitron', sans-serif;
+            text-shadow: 0 0 15px #2ecc71aa;
+            color: #2ecc71;
+        }
+
+        .cyber-divider {
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #2ecc71, transparent);
+            margin: 2rem 0;
+        }
+
+        .cyber-table {
+            background: rgba(0, 30, 0, 0.7);
+            border: 1px solid #2ecc71;
+            color: #2ecc71;
+        }
+
+        .cyber-table thead {
+            border-bottom: 2px solid #2ecc71;
+        }
+
+        .cyber-table th {
+            font-family: 'Orbitron', sans-serif;
+            letter-spacing: 1px;
+        }
+
+        .cyber-table td {
+            font-family: 'Rajdhani', sans-serif;
+        }
+
+        .badge {
+            font-family: 'Orbitron', sans-serif;
+            letter-spacing: 1px;
+        }
+
+        .bg-danger {
+            background-color: #ff0033!important;
+        }
+
+        .bg-success {
+            background-color: #2ecc71!important;
+        }
+
+        .cyber-btn {
+            background: linear-gradient(135deg, #2ecc71, #27ae60);
+            border: none;
+            color: #000;
+            font-family: 'Orbitron', sans-serif;
+            transition: transform 0.3s ease;
+        }
+
+        .cyber-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(46, 204, 113, 0.3);
+        }
+
+        .alert {
+            background: rgba(0, 30, 0, 0.7);
+            border: 1px solid #2ecc71;
+            color: #2ecc71;
+            font-family: 'Rajdhani', sans-serif;
+        }
+
+        @media (max-width: 768px) {
+            .cyber-card {
+                margin: 80px 1rem 2rem;
+                padding: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="cyber-nav">
+        <div class="nav-container">
+            <a href="{{ url_for('home') }}" class="nav-logo">
+                <i class="fas fa-shield-alt"></i> TILSYN
+            </a>
+            <div class="nav-items">
+                <a href="{{ url_for('home') }}" class="nav-link">
+                    <i class="fas fa-home"></i> Home
+                </a>
+                <a href="{{ url_for('services') }}" class="nav-link">
+                    <i class="fas fa-user-shield"></i> Services
+                </a>
+                <a href="{{ url_for('about') }}" class="nav-link">
+                    <i class="fas fa-info-circle"></i> About
+                </a>
+                <a href="{{ url_for('logout') }}" class="nav-link">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="cyber-main">
+        <div class="cyber-card">
+            <h1 class="neon-text mb-4">
+                <i class="fas fa-map-marker-alt"></i> IP TRACKING HISTORY
+            </h1>
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                        <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                            {{ message }}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" style="filter: invert(1);"></button>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+
+            {% if common_country %}
+                <div class="alert alert-info">
+                    <i class="fas fa-globe-asia"></i> Most Frequent Location: 
+                    <strong>{{ common_country }}</strong>
+                    {% if ip_history %}
+                        ({{ ip_history|length }} total entries)
+                    {% endif %}
+                </div>
+            {% endif %}
+
+            {% if show_ip %}
+                {% if ip_history %}
+                    <div class="table-responsive">
+                        <table class="table cyber-table">
+                            <thead>
+                                <tr>
+                                    <th>IP Address</th>
+                                    <th>Country</th>
+                                    <th>City</th>
+                                    <th>VPN Detected</th>
+                                    <th>Timestamp</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for entry in ip_history %}
+                                    <tr>
+                                        <td>{{ entry[0] }}</td>
+                                        <td>{{ entry[1] }}</td>
+                                        <td>{{ entry[2] }}</td>
+                                        <td>
+                                            {% if entry[3] %}
+                                                <span class="badge bg-danger">DETECTED</span>
+                                            {% else %}
+                                                <span class="badge bg-success">ABSENT</span>
+                                            {% endif %}
+                                        </td>
+                                        <td>{{ entry[4].strftime('%Y-%m-%d %H:%M') }}</td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                {% else %}
+                    <div class="alert alert-warning">
+                        <i class="fas fa-exclamation-triangle"></i> No IP history found for this account.
+                    </div>
+                {% endif %}
+            {% else %}
+                <div class="alert alert-warning">
+                    <i class="fas fa-eye-slash"></i> IP history visibility is turned off by your child.
+                </div>
+            {% endif %}
+
+            <div class="cyber-divider mt-4"></div>
+
+            <a href="{{ url_for('parents_dashboard') }}" class="btn cyber-btn mt-3">
+                <i class="fas fa-arrow-left"></i> BACK TO DASHBOARD
+            </a>
+        </div>
+    </div>
+
+    <div class="scan-line" style="position: fixed; top: 0; left: 0; width: 100%; height: 2px;
+        background: linear-gradient(90deg, transparent, #2ecc71); animation: scan 4s linear infinite;"></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Unsafe Websites</title>
+    <link rel="stylesheet" href="../static/design/main.css">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&family=Rajdhani:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .cyber-main {
+            background: linear-gradient(135deg, #001100 0%, #000800 100%);
+            min-height: 100vh;
+            padding: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cyber-card-alert {
+            background: rgba(20, 0, 0, 0.95);
+            border: 2px solid #ff4444;
+            border-radius: 15px;
+            padding: 3rem;
+            margin: 100px auto 2rem;
+            max-width: 1200px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 0 35px rgba(255, 68, 68, 0.4);
+        }
+
+        .cyber-card-alert::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255, 68, 68, 0.1), transparent);
+            animation: animate-grid 6s linear infinite;
+        }
+
+        .neon-title-alert {
+            font-family: 'Orbitron', sans-serif;
+            text-shadow: 0 0 15px #ff4444aa;
+            color: #ff4444;
+            border-bottom: 2px solid #ff4444;
+            padding-bottom: 1rem;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .cyber-table-alert {
+            background: rgba(30, 0, 0, 0.7);
+            border: 1px solid #ff4444;
+            color: #ff4444;
+            margin: 2rem 0;
+        }
+
+        .cyber-table-alert th {
+            font-family: 'Orbitron', sans-serif;
+            letter-spacing: 1px;
+            background: rgba(40, 0, 0, 0.5);
+            padding: 1.2rem;
+        }
+
+        .cyber-table-alert td {
+            font-family: 'Rajdhani', sans-serif;
+            padding: 1rem;
+            border-bottom: 1px solid rgba(255, 68, 68, 0.2);
+        }
+
+        .cyber-btn-alert {
+            background: linear-gradient(135deg, #ff4444, #cc0000);
+            border: none;
+            color: #000;
+            font-family: 'Orbitron', sans-serif;
+            padding: 0.8rem 2rem;
+            border-radius: 6px;
+            transition: transform 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .cyber-btn-alert:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(255, 68, 68, 0.3);
+        }
+
+        .incognito-badge {
+            background: #ff4444;
+            color: #000;
+            padding: 0.3rem 0.7rem;
+            border-radius: 4px;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.8rem;
+        }
+
+        @keyframes animate-grid {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @media (max-width: 768px) {
+            .cyber-card-alert {
+                padding: 1.5rem;
+                margin: 80px 1rem 2rem;
+            }
+            
+            .cyber-table-alert {
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+    <script>
+    </script>
+</head>
+<body>
+    <nav class="cyber-nav">
+        <div class="nav-container">
+            <a href="{{ url_for('home') }}" class="nav-logo">
+                <i class="fas fa-shield-alt"></i> TILSYN
+            </a>
+            <div class="nav-items">
+                <a href="{{ url_for('home') }}" class="nav-link">
+                    <i class="fas fa-home"></i> Home
+                </a>
+                <a href="{{ url_for('parents_dashboard') }}" class="nav-link">
+                    <i class="fas fa-tachometer-alt"></i> Dashboard
+                </a>
+                <a href="{{ url_for('logout') }}" class="nav-link">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="cyber-main">
+        <div class="cyber-card-alert">
+            <h1 class="neon-title-alert">
+                <i class="fas fa-exclamation-triangle"></i> UNSAFE WEBSITE ALERTS
+            </h1>
+
+            <div class="table-responsive">
+                <table class="table cyber-table-alert" id="unsafe-table">
+                    <thead>
+                        <tr>
+                            <th><i class="fas fa-link"></i> URL</th>
+                            <th><i class="fas fa-clock"></i> TIMESTAMP</th>
+                            <th><i class="fas fa-user-secret"></i> INCOGNITO</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for website in websites %}
+                        <tr>
+                            <td>{{ website[0] }}</td>
+                            <td>{{ website[1] }}</td>
+                            <td>
+                                {% if website[2] %}
+                                    <span class="incognito-badge">DETECTED</span>
+                                {% else %}
+                                    <span class="badge bg-secondary">NO</span>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="text-center mt-4">
+                <a href="{{ url_for('parents_dashboard') }}" class="cyber-btn-alert">
+                    <i class="fas fa-arrow-left"></i> RETURN TO DASHBOARD
+                </a>
+            </div>
+        </div>
+    </div>
+    <div class="scan-line" style="position: fixed; top: 0; left: 0; width: 100%; height: 2px;
+        background: linear-gradient(90deg, transparent, #ff4444); animation: scan 4s linear infinite;"></div>
+</body>
+</html>

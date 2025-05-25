@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="../static/design/main.css">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Rajdhani:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
+    <style>
+        .feature-card {
+            background: rgba(0, 20, 0, 0.9);
+            border: 1px solid var(--cyber-green);
+            border-radius: 8px;
+            padding: 2rem;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+ 
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(
+                45deg, 
+                transparent,
+                rgba(46, 204, 113, 0.1),
+                transparent
+            );
+            animation: animate-grid 6s linear infinite;
+            z-index: 1;
+        }
+ 
+        .feature-card-content {
+            position: relative;
+            z-index: 2;
+            backdrop-filter: blur(2px);
+        }
+ 
+        @keyframes animate-grid {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+ 
+        :root {
+            --cyber-green: #2ecc71;
+            --dark-bg: #0a0a0a;
+            --neon-glow: 0 0 15px #2ecc71aa;
+        }
+ 
+        body {
+            background: linear-gradient(135deg, #001100 0%, #000800 100%);
+            font-family: 'Rajdhani', sans-serif;
+            position: relative;
+            overflow-x: hidden;
+        }
+ 
+        .cyber-pattern {
+            position: fixed;
+            width: 100vw;
+            height: 100vh;
+            background-image: 
+                radial-gradient(circle at center, var(--cyber-green) 0%, transparent 2%),
+                linear-gradient(45deg, transparent 98%, var(--cyber-green) 98%);
+            background-size: 3px 3px, 50px 50px;
+            opacity: 0.1;
+            z-index: 0;
+            pointer-events: none;
+        }
+ 
+        .neon-text {
+            font-family: 'Orbitron', sans-serif;
+            text-shadow: var(--neon-glow);
+            letter-spacing: 2px;
+        }
+ 
+        .feature-card:hover {
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: 0 10px 30px rgba(46, 204, 113, 0.3);
+        }
+ 
+        .feature-icon {
+            font-size: 2.5rem;
+            color: var(--cyber-green);
+            margin-bottom: 1rem;
+            filter: drop-shadow(var(--neon-glow));
+        }
+ 
+        .cyber-divider {
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--cyber-green), transparent);
+            margin: 2rem 0;
+        }
+ 
+        .p_index {
+            font-family: 'Rajdhani', sans-serif;
+            font-weight: 600;
+            letter-spacing: 1px;
+        }
+    </style>
+</head>
+<body>
+    <div class="cyber-pattern"></div>
+    
+    <nav class="cyber-nav">
+        <div class="nav-container">
+            <a href="{{ url_for('home') }}" class="nav-logo">
+                <i class="fas fa-shield-alt"></i> TILSYN
+            </a>
+            
+            <div class="nav-items">
+                <a href="{{ url_for('home') }}" class="nav-link {% if active_page == 'home' %}active{% endif %}">
+                    <i class="fas fa-home"></i> Home
+                </a>
+                <a href="{{ url_for('services') }}" class="nav-link {% if active_page == 'dashboard' %}active{% endif %}">
+                    <i class="fas fa-user-shield"></i> Services
+                </a>
+                <a href="{{ url_for('about') }}" class="nav-link {% if active_page == 'about' %}active{% endif %}">
+                    <i class="fas fa-info-circle"></i> About
+                </a>
+                <a href="{{ url_for('logout') }}" class="nav-link">
+                    <i class="fas fa-sign-out-alt"></i> Login
+                </a>
+            </div>
+        </div>
+    </nav>
+ 
+    <div class="main-content home-content" style="position: relative; z-index: 1;">
+        <h1 class="neon-text" style="font-size: 4.5rem; margin-bottom: 1.5rem;">TILSYN</h1>
+        <p class="p_index" style="color: var(--cyber-green); font-size: 1.8rem; text-transform: uppercase;">
+	Children Supervision Application
+        </p>
+ 
+        <div class="cyber-divider"></div>
+ 
+        <div class="home-links" style="margin: 3rem 0;">
+            <a href="{{ url_for('confirm') }}" class="home-btn register-btn" 
+               style="background: linear-gradient(135deg, #27ae60, #1d8348);
+                      border: 2px solid var(--cyber-green);">
+                <i class="fa-solid fa-registered"></i>
+                Register
+            </a>
+            <a href="{{ url_for('login') }}" class="home-btn login-btn"
+               style="background: linear-gradient(135deg, #0a3d62, #1d8348);
+                      border: 2px solid var(--cyber-green);">
+                <i class="fa-solid fa-right-to-bracket"></i>
+                Login
+            </a>
+        </div>
+ 
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2rem; padding: 2rem;">
+            <div class="feature-card">
+                <div class="feature-card-content">
+                    <i class="fas fa-shield-alt feature-icon"></i>
+                    <h3 style="color: var(--cyber-green); margin-bottom: 1rem; font-family: 'Orbitron';">REAL-TIME PROTECTION</h3>
+                    <p style="color: #d0d0d0; line-height: 1.6;">Advanced monitoring of browsing activities with instant threat detection algorithms</p>
+                </div>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-card-content">
+                    <i class="fas fa-user-lock feature-icon"></i>
+                    <h3 style="color: var(--cyber-green); margin-bottom: 1rem; font-family: 'Orbitron';">PRIVACY GUARD</h3>
+                    <p style="color: #d0d0d0; line-height: 1.6;">Ethical monitoring framework with consent-based tracking and encrypted reports</p>
+                </div>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-card-content">
+                    <i class="fas fa-solid fa-brain feature-icon"></i>
+                    <h3 style="color: var(--cyber-green); margin-bottom: 1rem; font-family: 'Orbitron';">SMART ANALYTICS</h3>
+                    <p style="color: #d0d0d0; line-height: 1.6;">Insights and detailed activity pattern analysis</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="scan-line" style="position: fixed; top: 0; left: 0; width: 100%; height: 2px; background: linear-gradient(90deg, transparent, var(--cyber-green)); animation: scan 4s linear infinite;"></div>
+</body>
+</html>

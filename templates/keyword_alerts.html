@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Keyword Alerts</title>
+    <link rel="stylesheet" href="../static/design/main.css">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&family=Rajdhani:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .cyber-main {
+            background: linear-gradient(135deg, #001100 0%, #000800 100%);
+            min-height: 100vh;
+            padding: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cyber-card {
+            background: rgba(0, 20, 0, 0.95);
+            border: 2px solid #2ecc71;
+            border-radius: 15px;
+            padding: 3rem;
+            margin: 100px auto 2rem;
+            max-width: 1200px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 0 35px rgba(46, 204, 113, 0.4);
+        }
+
+        .neon-title {
+            font-family: 'Orbitron', sans-serif;
+            text-shadow: 0 0 15px #2ecc71aa;
+            color: #2ecc71;
+            border-bottom: 2px solid #2ecc71;
+            padding-bottom: 1rem;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .cyber-table {
+            width: 100%;
+            background: rgba(0, 30, 0, 0.7);
+            border: 1px solid #2ecc71;
+            color: #2ecc71;
+            margin: 2rem 0;
+            border-collapse: collapse;
+        }
+
+        .cyber-table th, .cyber-table td {
+            padding: 1.2rem;
+            text-align: left;
+            border-bottom: 1px solid rgba(46, 204, 113, 0.2);
+        }
+
+        .cyber-table th {
+            font-family: 'Orbitron', sans-serif;
+            background: rgba(0, 40, 0, 0.5);
+            letter-spacing: 1px;
+        }
+
+        .cyber-table td {
+            font-family: 'Rajdhani', sans-serif;
+            color: #fff; 
+        }
+
+        .cyber-alert {
+            background: rgba(255, 0, 51, 0.1);
+            border: 1px solid #ff0033;
+            padding: 1.5rem;
+            text-align: center;
+            margin: 2rem 0;
+            border-radius: 8px;
+        }
+
+        .cyber-btn {
+            background: linear-gradient(135deg, #2ecc71, #27ae60);
+            border: none;
+            color: #000;
+            font-family: 'Orbitron', sans-serif;
+            padding: 0.8rem 2rem;
+            border-radius: 6px;
+            transition: transform 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .cyber-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(46, 204, 113, 0.3);
+        }
+
+        @media (max-width: 768px) {
+            .cyber-card {
+                padding: 1.5rem;
+                margin: 80px 1rem 2rem;
+            }
+            
+            .cyber-table {
+                font-size: 0.9rem;
+            }
+            
+            .cyber-table th, .cyber-table td {
+                padding: 0.8rem;
+            }
+        }
+    </style>
+    <script>
+    function refreshKeywords() {
+        fetch('/api/keyword-visibility')
+            .then(response => response.json())
+            .then(visibility => {
+                if (visibility.visible) {
+                    fetch('/api/keyword-data')
+                        .then(response => response.json())
+                        .then(data => {
+                            const tbody = document.querySelector('#keywords-table tbody');
+                            tbody.innerHTML = data.keywords.map(alert => `
+                                <tr>
+                                    <td>${alert.keyword}</td>
+                                    <td>${alert.context}</td>
+                                    <td>${alert.timestamp}</td>
+                                </tr>
+                            `).join('');
+                        });
+                } else {
+                    document.querySelector('#keywords-table tbody').innerHTML = '';
+                }
+            });
+    }
+    document.addEventListener('DOMContentLoaded', refreshKeywords);
+    setInterval(refreshKeywords, 5000);
+    </script>
+</head>
+<body>
+    <nav class="cyber-nav">
+        <div class="nav-container">
+            <a href="{{ url_for('home') }}" class="nav-logo">
+                <i class="fas fa-shield-alt"></i> TILSYN
+            </a>
+            <div class="nav-items">
+                <a href="{{ url_for('home') }}" class="nav-link">
+                    <i class="fas fa-home"></i> Home
+                </a>
+                <a href="{{ url_for('parents_dashboard') }}" class="nav-link">
+                    <i class="fas fa-tachometer-alt"></i> Dashboard
+                </a>
+                <a href="{{ url_for('logout') }}" class="nav-link">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="cyber-main">
+        <div class="cyber-card">
+            <h1 class="neon-title">
+                <i class="fas fa-exclamation-triangle"></i> KEYWORD ALERTS
+            </h1>
+
+            {% if show_keyword %}
+                <div class="table-responsive">
+                    <table class="cyber-table" id="keywords-table">
+                        <thead>
+                            <tr>
+                                <th><i class="fas fa-search"></i> KEYWORD</th>
+                                <th><i class="fas fa-file-alt"></i> CONTEXT</th>
+                                <th><i class="fas fa-clock"></i> TIMESTAMP</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for alert in keyword_alerts %}
+                            <tr>
+                                <td>{{ alert.keyword }}</td>
+                                <td>{{ alert.context }}</td>
+                                <td>{{ alert.timestamp }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            {% else %}
+                <div class="cyber-alert">
+                    <i class="fas fa-eye-slash fa-2x" style="color: #ff0033;"></i>
+                    <p class="mt-3" style="font-family: 'Rajdhani'; color: #2ecc71;">
+                        KEYWORD ALERTS ARE CURRENTLY HIDDEN BY YOUR CHILD
+                    </p>
+                </div>
+            {% endif %}
+
+            <div class="text-center mt-4">
+                <a href="{{ url_for('parents_dashboard') }}" class="cyber-btn">
+                    <i class="fas fa-arrow-left"></i> RETURN TO DASHBOARD
+                </a>
+            </div>
+        </div>
+    </div>
+    <div class="scan-line" style="position: fixed; top: 0; left: 0; width: 100%; height: 2px;
+        background: linear-gradient(90deg, transparent, #2ecc71); animation: scan 4s linear infinite;"></div>
+</body>
+</html>

@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="../static/design/main.css">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Rajdhani:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Age Verification</title>
+    <style>
+        .cyber-confirm {
+            background: linear-gradient(135deg, #001100 0%, #000800 100%);
+            min-height: 100vh;
+            position: relative;
+        }
+
+        .confirm-card {
+            background: rgba(0, 20, 0, 0.9);
+            border: 2px solid #2ecc71;
+            border-radius: 15px;
+            padding: 3rem;
+            margin: 2rem auto;
+            max-width: 600px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 0 25px rgba(46, 204, 113, 0.3);
+        }
+
+        .confirm-content {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+        }
+
+        .neon-text {
+            font-family: 'Orbitron', sans-serif;
+            text-shadow: 0 0 15px #2ecc71aa;
+            color: #2ecc71;
+        }
+
+        .cyber-divider {
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #2ecc71, transparent);
+            margin: 2rem 0;
+        }
+
+        .age-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .cyber-button {
+            padding: 1.2rem 2.5rem;
+            border-radius: 8px;
+            background: rgba(46, 204, 113, 0.1);
+            border: 2px solid #2ecc71;
+            color: #2ecc71;
+            font-family: 'Orbitron', sans-serif;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+        }
+
+        .cyber-button:hover {
+            background: rgba(46, 204, 113, 0.2);
+            transform: translateY(-3px);
+            box-shadow: 0 0 25px rgba(46, 204, 113, 0.4);
+        }
+    </style>
+</head>
+<body>
+    <div class="cyber-confirm">
+        <nav class="cyber-nav">
+        <div class="nav-container">
+            <a href="{{ url_for('home') }}" class="nav-logo">
+                <i class="fas fa-shield-alt"></i> TILSYN
+            </a>
+            
+            <div class="nav-items">
+                <a href="{{ url_for('home') }}" class="nav-link {% if active_page == 'home' %}active{% endif %}">
+                    <i class="fas fa-home"></i> Home
+                </a>
+                <a href="{{ url_for('services') }}" class="nav-link {% if active_page == 'dashboard' %}active{% endif %}">
+                    <i class="fas fa-user-shield"></i> Services
+                </a>
+                <a href="{{ url_for('about') }}" class="nav-link {% if active_page == 'about' %}active{% endif %}">
+                    <i class="fas fa-info-circle"></i> About
+                </a>
+                <a href="{{ url_for('logout') }}" class="nav-link">
+                    <i class="fas fa-sign-out-alt"></i> Login
+                </a>
+            </div>
+        </div>
+    </nav>
+    <div class="main-content">
+        <div class="confirm-card">
+            <div class="confirm-content">
+                <h1 class="neon-text" style="font-size: 2.5rem;">
+                    AGE VERIFICATION REQUIRED
+                </h1>
+                <div class="cyber-divider"></div>
+
+                <p style="color: #ccc; font-size: 1.2rem; font-family: 'Rajdhani';">
+                    Adult accounts are for parental monitoring only.<br>
+                    To register a child account, the user must be under 18 years old.
+                </p>
+
+                <div class="age-buttons">
+                    <a href="{{ url_for('confirm') }}" class="cyber-button">
+                        <i class="fas fa-arrow-left"></i>
+                        GO BACK
+                    </a>
+                    
+                    <div class="cyber-divider"></div>
+                    
+                    <p style="font-size: 1.2rem; color: #ccc; font-family: 'Rajdhani';">
+                        Is the child under 12 years old?
+                    </p>
+                    
+                    <a href="{{ url_for('register') }}" class="cyber-button">
+                        <i class="fas fa-child"></i>
+                        CONTINUE REGISTRATION
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+    <div class="scan-line" style="position: fixed; top: 0; left: 0; width: 100%; height: 2px;
+        background: linear-gradient(90deg, transparent, #2ecc71); animation: scan 4s linear infinite;"></div>
+</body>
+</html>

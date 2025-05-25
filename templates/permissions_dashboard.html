@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Privacy Controls</title>
+    <link rel="stylesheet" href="../static/design/main.css">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&family=Rajdhani:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .cyber-privacy {
+            background: linear-gradient(135deg, #001100 0%, #000800 100%);
+            min-height: 100vh;
+            position: relative;
+            overflow: hidden;
+            padding-top: 80px; 
+        }
+            .cyber-nav {
+            background: rgba(0, 20, 0, 0.95);
+            border-bottom: 2px solid #2ecc71;
+            padding: 1rem 2rem;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .privacy-card {
+            background: rgba(0, 20, 0, 0.95);
+            border: 2px solid #2ecc71;
+            border-radius: 15px;
+            padding: 3rem;
+            margin: 2rem auto;
+            max-width: 600px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 0 35px rgba(46, 204, 113, 0.4);
+        }
+
+        .nav-logo {
+            font-family: 'Orbitron', sans-serif;
+            color: #2ecc71;
+            text-decoration: none;
+            font-size: 1.5rem;
+            text-shadow: 0 0 15px #2ecc71aa;
+        }
+
+        .nav-items {
+            display: flex;
+            gap: 2rem;
+        }
+
+        
+        .nav-link {
+            color: #ccc;
+            text-decoration: none;
+            font-family: 'Rajdhani', sans-serif;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+        }
+             .nav-link:hover {
+            background: rgba(46, 204, 113, 0.1);
+            color: #2ecc71;
+            transform: translateY(-2px);
+        }
+
+         .nav-link.active {
+            background: rgba(46, 204, 113, 0.2);
+            color: #2ecc71;
+            box-shadow: 0 0 15px rgba(46, 204, 113, 0.3);
+        }
+
+            .cyber-nav {
+            background: rgba(0, 20, 0, 0.95);
+            border-bottom: 2px solid #2ecc71;
+            padding: 1rem 2rem;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .privacy-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(46, 204, 113, 0.1), transparent);
+            animation: animate-grid 6s linear infinite;
+        }
+
+        .control-panel {
+            position: relative;
+            z-index: 2;
+        }
+
+        .cyber-divider {
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #2ecc71, transparent);
+            margin: 2rem 0;
+        }
+
+        .privacy-toggle {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            border: 1px solid rgba(46, 204, 113, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .privacy-toggle:hover {
+            background: rgba(46, 204, 113, 0.1);
+            transform: translateY(-3px);
+        }
+
+        .toggle-label {
+            font-family: 'Orbitron', sans-serif;
+            color: #2ecc71;
+            text-shadow: 0 0 15px #2ecc71aa;
+            letter-spacing: 1px;
+        }
+
+        .status-indicator {
+            font-family: 'Rajdhani', sans-serif;
+            color: #ccc;
+            font-size: 1.1rem;
+            margin-left: 1rem;
+        }
+
+        .cyber-switch {
+            position: relative;
+            display: inline-block;
+            width: 60px;
+            height: 34px;
+        }
+
+        .cyber-switch input { 
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .cyber-slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #333;
+            transition: .4s;
+            border-radius: 34px;
+            border: 1px solid #2ecc71;
+        }
+
+        .cyber-slider:before {
+            position: absolute;
+            content: "";
+            height: 26px;
+            width: 26px;
+            left: 4px;
+            bottom: 4px;
+            background-color: #2ecc71;
+            transition: .4s;
+            border-radius: 50%;
+            box-shadow: 0 0 10px #2ecc71;
+        }
+
+        input:checked + .cyber-slider {
+            background-color: rgba(46, 204, 113, 0.2);
+        }
+
+        input:checked + .cyber-slider:before {
+            transform: translateX(26px);
+        }
+
+        @keyframes animate-grid {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="cyber-pattern"></div>
+    
+        <nav class="cyber-nav">
+        <div class="nav-container">
+            <a href="{{ url_for('home') }}" class="nav-logo">
+                <i class="fas fa-shield-alt"></i> TILSYN
+            </a>
+            <div class="nav-items">
+                <a href="{{ url_for('home') }}" class="nav-link {% if active_page == 'home' %}active{% endif %}">
+                    <i class="fas fa-home"></i> Home
+                </a>
+                <a href="{{ url_for('services') }}" class="nav-link {% if active_page == 'dashboard' %}active{% endif %}">
+                    <i class="fas fa-user-shield"></i> Dashboard
+                </a>
+                <a href="{{ url_for('about') }}" class="nav-link {% if active_page == 'about' %}active{% endif %}">
+                    <i class="fas fa-info-circle"></i> About
+                </a>
+                <a href="{{ url_for('logout') }}" class="nav-link">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="cyber-privacy">
+        <div class="privacy-card">
+            <div class="control-panel">
+                <h1 class="neon-text" style="text-align: center; font-size: 2.5rem;">
+                    <i class="fas fa-user-shield"></i> PRIVACY CONTROLS
+                </h1>
+                
+                <div class="cyber-divider"></div>
+
+                <div class="privacy-toggle">
+                    <div>
+                        <span class="toggle-label">EMAIL REGISTRATIONS</span>
+                        <span class="status-indicator" id="statusText">LOADING...</span>
+                    </div>
+                    <label class="cyber-switch">
+                        <input type="checkbox" id="emailVisibility">
+                        <span class="cyber-slider"></span>
+                    </label>
+                </div>
+
+                <div class="privacy-toggle">
+                    <div>
+                        <span class="toggle-label">LOGIN ATTEMPTS</span>
+                        <span class="status-indicator" id="loginStatusText">LOADING...</span>
+                    </div>
+                    <label class="cyber-switch">
+                        <input type="checkbox" id="loginVisibility">
+                        <span class="cyber-slider"></span>
+                    </label>
+                </div>
+
+                <div class="privacy-toggle">
+                    <div>
+                        <span class="toggle-label">IP HISTORY</span>
+                        <span class="status-indicator" id="ipStatusText">LOADING...</span>
+                    </div>
+                    <label class="cyber-switch">
+                        <input type="checkbox" id="ipVisibility">
+                        <span class="cyber-slider"></span>
+                    </label>
+                </div>
+
+                <div class="privacy-toggle">
+                    <div>
+                        <span class="toggle-label">VISITED WEBSITES</span>
+                        <span class="status-indicator" id="visitedStatusText">LOADING...</span>
+                    </div>
+                    <label class="cyber-switch">
+                        <input type="checkbox" id="visitedVisibility">
+                        <span class="cyber-slider"></span>
+                    </label>
+                </div>
+
+                <div class="privacy-toggle">
+                    <div>
+                        <span class="toggle-label">SYSTEM ACTIVITIES</span>
+                        <span class="status-indicator" id="systemActivitiesStatusText">LOADING...</span>
+                    </div>
+                    <label class="cyber-switch">
+                        <input type="checkbox" id="systemActivitiesVisibility">
+                        <span class="cyber-slider"></span>
+                    </label>
+                </div>
+
+                <div class="privacy-toggle">
+                    <div>
+                        <span class="toggle-label">KEYWORD ALERTS</span>
+                        <span class="status-indicator" id="keywordStatusText">LOADING...</span>
+                    </div>
+                    <label class="cyber-switch">
+                        <input type="checkbox" id="keywordVisibility">
+                        <span class="cyber-slider"></span>
+                    </label>
+                </div>
+
+                <div class="privacy-toggle">
+                    <div>
+                        <span class="toggle-label">SCREEN MANAGEMENT</span>
+                        <span class="status-indicator" id="screenStatusText">LOADING...</span>
+                    </div>
+                    <label class="cyber-switch">
+                        <input type="checkbox" id="screenVisibility">
+                        <span class="cyber-slider"></span>
+                    </label>
+                </div>
+
+                <div class="cyber-divider"></div>
+
+                <p style="text-align: center; color: #ccc; font-family: 'Rajdhani';">
+                    <i class="fas fa-info-circle"></i> Adjust visibility of your activities to parent accounts
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <div class="scan-line" style="position: fixed; top: 0; left: 0; width: 100%; height: 2px;
+        background: linear-gradient(90deg, transparent, #2ecc71); animation: scan 4s linear infinite;"></div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            fetch('/api/email-visibility')
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('emailVisibility').checked = data.visible;
+                    document.getElementById('statusText').textContent = 
+                        data.visible ? 'VISIBLE' : 'HIDDEN';
+                });
+
+            fetch('/api/login-visibility')
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('loginVisibility').checked = data.visible;
+                    document.getElementById('loginStatusText').textContent = 
+                        data.visible ? 'VISIBLE' : 'HIDDEN';
+                });
+            document.getElementById('emailVisibility').addEventListener('change', function() {
+                fetch('/api/email-visibility', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({ visible: this.checked })
+                }).then(() => {
+                    document.getElementById('statusText').textContent = 
+                        this.checked ? 'VISIBLE' : 'HIDDEN';
+                });
+            });
+
+            document.getElementById('loginVisibility').addEventListener('change', function() {
+                fetch('/api/login-visibility', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({ visible: this.checked })
+                }).then(() => {
+                    document.getElementById('loginStatusText').textContent = 
+                        this.checked ? 'VISIBLE' : 'HIDDEN';
+                });
+            });
+            fetch('/api/ip-visibility')
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('ipVisibility').checked = data.visible;
+                    document.getElementById('ipStatusText').textContent = 
+                    data.visible ? 'VISIBLE' : 'HIDDEN';
+                });
+
+                document.getElementById('ipVisibility').addEventListener('change', function() {
+                fetch('/api/ip-visibility', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({ visible: this.checked })
+                }).then(() => {
+                    document.getElementById('ipStatusText').textContent = 
+                    this.checked ? 'VISIBLE' : 'HIDDEN';
+                });
+            });
+            fetch('/api/visited-visibility')
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('visitedVisibility').checked = data.visible;
+                    document.getElementById('visitedStatusText').textContent = 
+                        data.visible ? 'VISIBLE' : 'HIDDEN';
+                });
+
+            document.getElementById('visitedVisibility').addEventListener('change', function() {
+                fetch('/api/visited-visibility', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({ visible: this.checked })
+                }).then(() => {
+                    document.getElementById('visitedStatusText').textContent = 
+                        this.checked ? 'VISIBLE' : 'HIDDEN';
+                });
+            });
+            fetch('/api/system-activities-visibility')
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('systemActivitiesVisibility').checked = data.visible;
+                    document.getElementById('systemActivitiesStatusText').textContent = 
+                        data.visible ? 'VISIBLE' : 'HIDDEN';
+                });
+
+            document.getElementById('systemActivitiesVisibility').addEventListener('change', function() {
+                fetch('/api/system-activities-visibility', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({ visible: this.checked })
+                }).then(() => {
+                    document.getElementById('systemActivitiesStatusText').textContent = 
+                        this.checked ? 'VISIBLE' : 'HIDDEN';
+                });
+            });
+            fetch('/api/keyword-visibility')
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('keywordVisibility').checked = data.visible;
+                    document.getElementById('keywordStatusText').textContent = 
+                        data.visible ? 'VISIBLE' : 'HIDDEN';
+                });
+
+            document.getElementById('keywordVisibility').addEventListener('change', function() {
+                fetch('/api/keyword-visibility', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({ visible: this.checked })
+                }).then(() => {
+                    document.getElementById('keywordStatusText').textContent = 
+                        this.checked ? 'VISIBLE' : 'HIDDEN';
+                });
+            });
+            fetch('/api/screen-visibility')
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('screenVisibility').checked = data.visible;
+                    document.getElementById('screenStatusText').textContent = 
+                        data.visible ? 'VISIBLE' : 'HIDDEN';
+                });
+
+            document.getElementById('screenVisibility').addEventListener('change', function() {
+                fetch('/api/screen-visibility', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({ visible: this.checked })
+                }).then(() => {
+                    document.getElementById('screenStatusText').textContent = 
+                        this.checked ? 'VISIBLE' : 'HIDDEN';
+                });
+            });
+        });
+    </script>
+</body>
+</html>
