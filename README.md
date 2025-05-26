@@ -60,27 +60,137 @@ A full-stack application for parental supervision of child online activities. Fe
 
 ---
 
-## Installation
+## Installation Guide
 
 ### Prerequisites
-- Python 3.9+
-- PostgreSQL
-- Google API Key
+- Python 3.10+
+- PostgreSQL 
+- Node.js and npm
+- Google Chrome
+- pip
+- virtualenv
+- Git
+
+---
+
+### Setup
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/your-repo/tilsyn.git
+   git clone https://github.com/MenuraD/Tilsyn.git
    cd tilsyn
 
-2. Install Python dependencies
+2. Set up the Python Backend
+    (a) Create Virtual environment
     ```bash
-    pip install flask psycopg2-binary werkzeug python-dotenv ipaddress
+    python -m venv  venv
+    source venv/bin/activate
+    ```
+    (b) Install dependencies
+    ```bash
+    pip install -r requirements.txt
+    ```
 
-3. Set up PostgreSQL database:
+3. Configure PostgreSQL Database
+    (a) Create the database
     ```sql
     CREATE DATABASE mydatabase;
-    CREATE USER postgres WITH PASSWORD 'guyi2123';
-    GRANT ALL PRIVILEGES ON DATABASE mydatabase TO postgres;
+    ```
+    (b) Create the required tables:
+    ```sql
+    CREATE TABLE users (
+        id SERIAL PRIMARY KEY,
+        name TEXT,
+        username TEXT UNIQUE,
+        password_hash TEXT,
+        age INTEGER,
+        is_child BOOLEAN,
+        adult_id INTEGER,
+        show_email_registrations BOOLEAN DEFAULT TRUE,
+        show_email_logins BOOLEAN DEFAULT TRUE,
+        show_ip_history BOOLEAN DEFAULT TRUE,
+        show_visited_websites BOOLEAN DEFAULT TRUE,
+        show_system_activities BOOLEAN DEFAULT TRUE,
+        show_keyword_alerts BOOLEAN DEFAULT TRUE
+        );
+
+        CREATE TABLE adults (
+        id SERIAL PRIMARY KEY,
+        user_id INTEGER REFERENCES users(id)
+        );
+
+        CREATE TABLE registrations (
+        id SERIAL PRIMARY KEY,
+        email TEXT,
+        url TEXT,
+        timestamp TIMESTAMP
+        );
+
+        CREATE TABLE logins (
+        id SERIAL PRIMARY KEY,
+        email TEXT,
+        url TEXT,
+        timestamp TIMESTAMP
+        );
+
+        CREATE TABLE visited_websites (
+        id SERIAL PRIMARY KEY,
+        url TEXT,
+        timestamp TIMESTAMP,
+        child_id INTEGER REFERENCES users(id)
+        );
+
+        CREATE TABLE ip_history (
+        id SERIAL PRIMARY KEY,
+        ip_address TEXT,
+        country TEXT,
+        city TEXT,
+        is_vpn BOOLEAN,
+        timestamp TIMESTAMP,
+        child_id INTEGER REFERENCES users(id)
+        );
+    ```
+    
+4. Environmental Variables
+Set these in a .env file (optional)
+    ```env
+    FLASK_APP=app.py
+    FLASK_ENV=development
+    ```
+
+5. Run the Flask App
+    ```bash
+    python app.py
+    ```
+
+### 🧩 Set Up Chrome Extension
+
+1.  Open Chrome and go to chrome://extensions/
+    
+2.  Enable **Developer Mode** (top right)
+    
+3.  Click **Load Unpacked**
+    
+4.  Select the extension/ folder
+    
+
+### 📼 Run Background Agent (Windows Only)
+
+To track apps, keywords, and screen time:
+
+1.  Go to background\_agent/
+    
+2.  Install required libraries:
+    
+
+Plain textANTLR4BashCC#CSSCoffeeScriptCMakeDartDjangoDockerEJSErlangGitGoGraphQLGroovyHTMLJavaJavaScriptJSONJSXKotlinLaTeXLessLuaMakefileMarkdownMATLABMarkupObjective-CPerlPHPPowerShell.propertiesProtocol BuffersPythonRRubySass (Sass)Sass (Scss)SchemeSQLShellSwiftSVGTSXTypeScriptWebAssemblyYAMLXML`   bashCopyEditpip install psutil pynput requests   `
+
+1.  Run the agent:
+    
+
+Plain textANTLR4BashCC#CSSCoffeeScriptCMakeDartDjangoDockerEJSErlangGitGoGraphQLGroovyHTMLJavaJavaScriptJSONJSXKotlinLaTeXLessLuaMakefileMarkdownMATLABMarkupObjective-CPerlPHPPowerShell.propertiesProtocol BuffersPythonRRubySass (Sass)Sass (Scss)SchemeSQLShellSwiftSVGTSXTypeScriptWebAssemblyYAMLXML`   bashCopyEditpython background_agent.py   `
+
+
 
 ## Configuration
 
