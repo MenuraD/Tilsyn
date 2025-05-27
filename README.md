@@ -304,5 +304,5 @@ Include the CSS stylesheet in your HTML head:
 ```
 
 ## Preview
-![Home Page Preview](screenshots/home-preview.jpg)
+![Home Page Preview](screenshots/home.png)
 ```
