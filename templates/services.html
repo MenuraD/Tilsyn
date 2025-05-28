@@ -2,19 +2,439 @@
 <html lang="en">
 <head>
     <link rel="stylesheet" href="../static/design/main.css">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Rajdhani:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>About</title>
+    <title>Services</title>
+    <style>
+        .cyber-services {
+            background: linear-gradient(135deg, #001100 0%, #000800 100%);
+            min-height: 100vh;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .services-card {
+            background: rgba(0, 20, 0, 0.9);
+            border: 2px solid #2ecc71;
+            border-radius: 15px;
+            padding: 3rem;
+            margin: 2rem auto;
+            max-width: 1200px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 0 35px rgba(46, 204, 113, 0.4);
+        }
+
+        .services-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(46, 204, 113, 0.1), transparent);
+            animation: animate-grid 6s linear infinite;
+        }
+
+        .service-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .service-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid #2ecc71;
+            border-radius: 12px;
+            padding: 2rem;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .service-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(46, 204, 113, 0.3);
+        }
+
+        .service-icon {
+            font-size: 2.5rem;
+            color: #2ecc71;
+            margin-bottom: 1.5rem;
+            filter: drop-shadow(0 0 15px #2ecc71aa);
+        }
+
+        .service-title {
+            font-family: 'Orbitron', sans-serif;
+            color: #2ecc71;
+            font-size: 1.4rem;
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .service-desc {
+            font-family: 'Rajdhani', sans-serif;
+            color: #ccc;
+            line-height: 1.6;
+        }
+
+        @keyframes animate-grid {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        p {
+            font-family: 'Orbitron', sans-serif;
+        }
+        :root {
+            --cyber-green: #2ecc71;
+            --dark-bg: #0a0a0a;
+            --neon-glow: 0 0 15px #2ecc71aa;
+        }
+        
+        body {
+            margin: 0;
+            background: linear-gradient(135deg, #001100 0%, #000800 100%);
+            min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
+            font-family: 'Rajdhani', sans-serif;
+            color: #ccc;
+        }
+        
+        .cyber-pattern {
+            position: fixed;
+            width: 100vw;
+            height: 100vh;
+            background-image:
+                radial-gradient(circle at center, var(--cyber-green) 0%, transparent 2%),
+                linear-gradient(45deg, transparent 98%, var(--cyber-green) 98%);
+            background-size: 3px 3px, 50px 50px;
+            opacity: 0.1;
+            z-index: 0;
+            pointer-events: none;
+        }
+        
+        nav {
+            position: relative;
+            z-index: 10;
+            background: rgba(0, 20, 0, 0.8);
+            border-bottom: 1px solid var(--cyber-green);
+            padding: 15px 0;
+            box-shadow: 0 0 15px rgba(46, 204, 113, 0.2);
+        }
+        
+        nav ul {
+            list-style: none;
+            margin: 0 auto;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            max-width: 1200px;
+        }
+        
+        nav li {
+            margin: 0 15px;
+        }
+        
+        nav a {
+            color: #ccc;
+            text-decoration: none;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.1rem;
+            padding: 10px 15px;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        nav a:hover {
+            background: rgba(46, 204, 113, 0.1);
+            text-shadow: var(--neon-glow);
+            color: var(--cyber-green);
+        }
+        
+        .cyber-about {
+            position: relative;
+            z-index: 2;
+            padding: 3rem 1rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .about-card {
+            background: rgba(0, 20, 0, 0.9);
+            border: 2px solid var(--cyber-green);
+            border-radius: 15px;
+            padding: 3rem;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 0 35px rgba(46, 204, 113, 0.4);
+        }
+        
+        .about-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(46, 204, 113, 0.1), transparent);
+            animation: animate-grid 6s linear infinite;
+            z-index: -1;
+        }
+        
+        .about-header {
+            text-align: center;
+            margin-bottom: 2.5rem;
+        }
+        
+        .neon-text {
+            font-family: 'Orbitron', sans-serif;
+            text-shadow: var(--neon-glow);
+            color: var(--cyber-green);
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .cyber-divider {
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--cyber-green), transparent);
+            margin: 2rem 0;
+        }
+        
+        .about-content p {
+            font-size: 1.2rem;
+            line-height: 1.8;
+            margin-bottom: 1.5rem;
+            position: relative;
+            padding-left: 2rem;
+        }
+        
+        .about-content p:before {
+            content: '>';
+            position: absolute;
+            left: 0;
+            color: var(--cyber-green);
+            font-family: 'Orbitron', sans-serif;
+        }
+        
+        .mission-section {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            padding: 2rem;
+            margin: 2rem 0;
+            border: 1px solid rgba(46, 204, 113, 0.2);
+        }
+        
+        .mission-title {
+            color: var(--cyber-green);
+            font-family: 'Orbitron', sans-serif;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .values-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+        
+        .value-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            padding: 1.5rem;
+            border: 1px solid rgba(46, 204, 113, 0.2);
+            transition: all 0.3s ease;
+        }
+        
+        .value-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(46, 204, 113, 0.3);
+            border-color: var(--cyber-green);
+        }
+        
+        .value-icon {
+            font-size: 2rem;
+            color: var(--cyber-green);
+            margin-bottom: 1rem;
+        }
+        
+        .value-title {
+            font-family: 'Orbitron', sans-serif;
+            color: var(--cyber-green);
+            margin-bottom: 0.5rem;
+            font-size: 1.3rem;
+        }
+        
+        .scan-line {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--cyber-green));
+            animation: scan 4s linear infinite;
+            z-index: 5;
+            pointer-events: none;
+        }
+        
+        @keyframes animate-grid {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        @keyframes scan {
+            0% { transform: translateY(-100%); }
+            100% { transform: translateY(100vh); }
+        }
+        
+        @media (max-width: 768px) {
+            .about-card {
+                padding: 2rem 1.5rem;
+            }
+            
+            .neon-text {
+                font-size: 2rem;
+            }
+            
+            .values-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            nav ul {
+                flex-wrap: wrap;
+            }
+            
+            nav li {
+                margin: 5px;
+            }
+        }
+    </style>
 </head>
 <body>
-    <nav>
-        <ul>
-            <li><a href="{{ url_for('home') }}">Home</a></li>
-            <li><a href="{{ url_for('about') }}">About</a></li>
-            <li><a href="{{ url_for('services') }}">Services</a></li>
-            <li><a href="contact.html">Contact</a></li>
-        </ul>
+   <div class="cyber-pattern"></div>
+    
+    <nav class="cyber-nav">
+        <div class="nav-container">
+            <a href="{{ url_for('home') }}" class="nav-logo">
+                <i class="fas fa-shield-alt"></i> TILSYN
+            </a>
+            
+            <div class="nav-items">
+                <a href="{{ url_for('home') }}" class="nav-link {% if active_page == 'home' %}active{% endif %}">
+                    <i class="fas fa-home"></i> Home
+                </a>
+                <a href="{{ url_for('services') }}" class="nav-link {% if active_page == 'dashboard' %}active{% endif %}">
+                    <i class="fas fa-user-shield"></i> Services
+                </a>
+                <a href="{{ url_for('about') }}" class="nav-link {% if active_page == 'about' %}active{% endif %}">
+                    <i class="fas fa-info-circle"></i> About
+                </a>
+                <a href="{{ url_for('logout') }}" class="nav-link">
+                    <i class="fas fa-sign-out-alt"></i> Login
+                </a>
+            </div>
+        </div>
     </nav>
-    <h2>Services</h2>
+
+    <div class="cyber-services">
+        <div class="services-card" style="margin-top: 150px;">
+            <div class="confirm-content" style="position: relative; z-index: 2;">
+                <h1 class="neon-text" style="text-align: center; font-size: 2.5rem;">
+                    <i class="fas fa-cogs"></i> TILSYN SERVICES
+                </h1>
+                
+                <div class="cyber-divider"></div>
+                
+                <p class="p_index" style="font-family: 'Orbitron', sans-serif;text-align: center; font-size: 30px; color: #ccc; max-width: 800px; margin: 2rem auto;">
+                    Our comprehensive suite of digital safety tools empowers parents with actionable insights while respecting children's privacy. 
+                    Designed for transparency and trust in the digital age.
+                </p>
+                
+                <div class="service-grid">
+                    <!-- Real-time Monitoring -->
+                    <div class="service-card">
+                        <i class="fas fa-shield-alt service-icon"></i>
+                        <h3 class="service-title">Real-time Monitoring</h3>
+                        <p class="service-desc">
+                            Continuous tracking of web activities including website visits, search queries, 
+                            and application usage with instant threat detection.
+                        </p>
+                    </div>
+                    
+                    <!-- Safety Alerts -->
+                    <div class="service-card">
+                        <i class="fas fa-exclamation-triangle service-icon"></i>
+                        <h3 class="service-title">Safety Alerts</h3>
+                        <p class="service-desc">
+                            Instant notifications for harmful content, suspicious keywords, 
+                            and incognito mode usage with contextual insights.
+                        </p>
+                    </div>
+                    
+                    <!-- Account Protection -->
+                    <div class="service-card">
+                        <i class="fas fa-user-lock service-icon"></i>
+                        <h3 class="service-title">Account Protection</h3>
+                        <p class="service-desc">
+                            Track email registrations and login attempts across platforms 
+                            with detailed activity logs and security assessments.
+                        </p>
+                    </div>
+                    
+                    <!-- Screen Management -->
+                    <div class="service-card">
+                        <i class="fas fa-desktop service-icon"></i>
+                        <h3 class="service-title">Screen Management</h3>
+                        <p class="service-desc">
+                            Detailed analytics of device usage patterns with customizable 
+                            time limits and application-specific reports.
+                        </p>
+                    </div>
+                    
+                    <!-- Privacy Guard -->
+                    <div class="service-card">
+                        <i class="fas fa-eye-slash service-icon"></i>
+                        <h3 class="service-title">Privacy Guard</h3>
+                        <p class="service-desc">
+                            Child-controlled privacy settings that determine what activities 
+                            are visible to parents, promoting digital autonomy.
+                        </p>
+                    </div>
+                    
+                    <!-- Location Security -->
+                    <div class="service-card">
+                        <i class="fas fa-map-marker-alt service-icon"></i>
+                        <h3 class="service-title">Location Security</h3>
+                        <p class="service-desc">
+                            IP geolocation tracking with VPN detection and suspicious 
+                            location alerts for enhanced safety awareness.
+                        </p>
+                    </div>
+                </div>
+                
+                <div class="cyber-divider" style="margin-top: 3rem;"></div>
+                
+                <div style="text-align: center; margin-top: 2rem;">
+                    <a href="{{ url_for('confirm') }}" class="proceed-btn">
+                        <i class="fas fa-rocket"></i> GET STARTED WITH TILSYN
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scan line effect -->
+    <div class="scan-line" style="position: fixed; top: 0; left: 0; width: 100%; height: 2px;
+        background: linear-gradient(90deg, transparent, #2ecc71); animation: scan 4s linear infinite;"></div>
 </body>
 </html>
