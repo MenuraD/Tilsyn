@@ -172,6 +172,8 @@ Set these in a .env file (optional)
 3.  Click **Load Unpacked**
     
 4.  Select the extension/ folder
+
+5. After Installation go to details and toggle Allow in Incognito
     
 
 ### 📼 Run Background Agent (Windows Only)
@@ -307,4 +309,5 @@ Include the CSS stylesheet in your HTML head:
 Here are some screenshots and previews for the pages within:
 - Home Page Preview
 ![Home Page Preview](screenshots/1-home.png)
+
 ```
